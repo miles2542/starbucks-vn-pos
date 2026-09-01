@@ -4,11 +4,11 @@
 
 **Blocked by:** 02: Category Navigation and Grid Engine
 
-**Status:** ready-for-agent
+**Status:** done
 
-- [ ] `Food HN HY BNI` renders 4 subcategory buttons (`BAKERY HN`, `DESSERTS HN`, `SANDWICHES HN`, `Snack Mixology HN`)
-- [ ] Tapping `BAKERY HN` transitions Breadcrumb Banner to `BAKERY HN` and loads the bakery items matrix
-- [ ] Bakery item buttons display top-right green stock badges (`4`, `2`, `5`, `3`)
-- [ ] Sold-out bakery items display authentic red diagonal cross overlays
-- [ ] In-stock bakery item taps append to Section III order list; sold-out item taps are blocked or handled accurately
-- [ ] Unit & integration tests for subcategory transitions and stock badge rendering
+- [x] `Food HN HY BNI` renders 4 subcategory buttons (`BAKERY HN`, `DESSERTS HN`, `SANDWICHES HN`, `Snack Mixology HN`)
+- [x] Tapping `BAKERY HN` transitions Breadcrumb Banner to `BAKERY HN` and loads the bakery items matrix
+- [x] Bakery item buttons display top-right green stock badges (`4`, `2`, `5`, `3`)
+- [x] Sold-out bakery items display authentic red diagonal cross overlays
+- [x] In-stock bakery item taps append to Section III order list; sold-out item taps are blocked or handled accurately
+- [x] Unit & integration tests for subcategory transitions and stock badge rendering

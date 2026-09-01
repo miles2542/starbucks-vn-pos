@@ -1,8 +1,16 @@
 import { PosButton } from "@/components/common/PosButton";
+import { usePosStore } from "@/store/usePosStore";
 import { ArrowBigRight, ArrowDown, ArrowUp, ChevronsDown, ChevronsUp } from "lucide-react";
 import React from "react";
 
 export const FinalizeShell: React.FC = () => {
+  const orderItems = usePosStore((state) => state.orderItems);
+  const clearOrder = usePosStore((state) => state.clearOrder);
+
+  const totalAmount = React.useMemo(() => {
+    return orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
+  }, [orderItems]);
+
   return (
     <section
       data-testid="section-4-finalize-section"
@@ -30,13 +38,17 @@ export const FinalizeShell: React.FC = () => {
           data-testid="total-amount-display"
           className="flex-1 bg-[#dbeafe] border border-[#93c5fd] rounded-[1px] flex items-center justify-end px-3 font-black text-2xl text-[#1e3a8a] shadow-inner"
         >
-          0
+          {totalAmount.toLocaleString("en-US")}
         </div>
       </div>
 
       {/* Action Row 1 */}
       <div className="grid grid-cols-4 gap-1 flex-1">
-        <PosButton variant="tender-cyan" className="text-xs font-black">
+        <PosButton
+          variant="tender-cyan"
+          className="text-xs font-black"
+          onClick={() => clearOrder()}
+        >
           CLEAR ALL
         </PosButton>
         <PosButton variant="tender-cyan" className="text-xs font-black">

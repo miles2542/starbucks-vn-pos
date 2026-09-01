@@ -24,9 +24,13 @@ export interface CategoryItem {
 export interface MenuItem {
   id: string;
   categoryId: string;
+  subcategoryId?: string;
   name: string;
+  baseName?: string;
+  hasSizes?: boolean;
   shortName?: string;
   price?: number;
+  prices?: Partial<Record<SizeCode, number>>;
   row: number; // 1-6 within 5x6 center grid (or 1-7 in absolute)
   col: number; // 1-5 within 5x6 center grid (or 1-7 in absolute)
   isSubcategory?: boolean;
@@ -38,6 +42,16 @@ export interface MenuItem {
 export interface BreadcrumbNode {
   label: string;
   id?: string;
+}
+
+export interface OrderItem {
+  id: string;
+  menuItemId: string;
+  name: string;
+  size?: SizeCode;
+  quantity: number;
+  unitPrice: number;
+  totalPrice: number;
 }
 
 export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BTS";
@@ -65,6 +79,10 @@ export interface PosState {
   activeSize: SizeCode;
   multiplier: Multiplier;
 
+  // Order List & State
+  orderItems: OrderItem[];
+  selectedOrderItemId: string | null;
+
   // Actions
   setZoomMode: (mode: ZoomMode) => void;
   setScale: (scale: number) => void;
@@ -74,4 +92,8 @@ export interface PosState {
   setActiveSize: (size: SizeCode) => void;
   setMultiplier: (multiplier: Multiplier) => void;
   setServeType: (serveType: ServeType) => void;
+  addOrderItem: (item: MenuItem, size?: SizeCode, quantity?: number) => void;
+  selectOrderItem: (id: string | null) => void;
+  clearOrder: () => void;
 }
+

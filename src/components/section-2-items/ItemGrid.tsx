@@ -15,12 +15,18 @@ const TENDER_BY_COL = new Map(TENDER_ROW_BUTTONS.map((b) => [b.col, b]));
 
 export const ItemGrid: React.FC = () => {
   const activeCategoryId = usePosStore((state) => state.activeCategoryId);
+  const activeSubcategoryId = usePosStore((state) => state.activeSubcategoryId);
+  const activeSize = usePosStore((state) => state.activeSize);
   const multiplier = usePosStore((state) => state.multiplier);
   const isRefreshing = usePosStore((state) => state.isRefreshing);
   const setMultiplier = usePosStore((state) => state.setMultiplier);
+  const setActiveSize = usePosStore((state) => state.setActiveSize);
   const setActiveSubcategory = usePosStore((state) => state.setActiveSubcategory);
+  const addOrderItem = usePosStore((state) => state.addOrderItem);
 
-  const currentCategoryItems = MENU_ITEMS_BY_CATEGORY[activeCategoryId] || [];
+  // If subcategory is active, load items for that subcategory key, else active category
+  const lookupKey = activeSubcategoryId || activeCategoryId;
+  const currentCategoryItems = MENU_ITEMS_BY_CATEGORY[lookupKey] || [];
   const itemMap = React.useMemo(() => {
     const map = new Map<string, MenuItem>();
     for (const item of currentCategoryItems) {
@@ -30,8 +36,11 @@ export const ItemGrid: React.FC = () => {
   }, [currentCategoryItems]);
 
   const handleCenterItemClick = (item: MenuItem) => {
+    if (item.soldOut) return;
     if (item.isSubcategory) {
       setActiveSubcategory(item.id, item.name);
+    } else {
+      addOrderItem(item, activeSize, multiplier);
     }
   };
 
@@ -82,10 +91,18 @@ export const ItemGrid: React.FC = () => {
                 return <PosButton key={cellKey} variant="empty" />;
               }
 
+              const isSizeActive = sizeBtn.size !== undefined && activeSize === sizeBtn.size;
+
               return (
                 <PosButton
                   key={cellKey}
                   variant="modifier-red"
+                  isActive={isSizeActive}
+                  onClick={() => {
+                    if (sizeBtn.size) {
+                      setActiveSize(sizeBtn.size);
+                    }
+                  }}
                   className="text-xs font-black tracking-tight"
                 >
                   {sizeBtn.name}
@@ -126,16 +143,23 @@ export const ItemGrid: React.FC = () => {
               );
             }
 
+            const displayName =
+              item.hasSizes || /^[STGV]\s+/.test(item.name)
+                ? `${activeSize} ${item.baseName || item.name.replace(/^[STGV]\s+/, "")}`
+                : item.name;
+
             return (
               <PosButton
                 key={cellKey}
                 variant={item.variant || "default"}
+                badge={item.stock}
+                soldOut={item.soldOut}
                 onClick={() => handleCenterItemClick(item)}
                 className={`text-[12px] font-black tracking-tight px-1 transition-opacity ${
                   isRefreshing ? "opacity-0" : "opacity-100"
                 }`}
               >
-                {item.name}
+                {displayName}
               </PosButton>
             );
           });

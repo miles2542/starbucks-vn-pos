@@ -1,5 +1,5 @@
 import { CATEGORIES } from "@/constants/categories";
-import type { BreadcrumbNode, Multiplier, PosState, ServeType, SizeCode, ZoomMode } from "@/types/pos";
+import type { BreadcrumbNode, MenuItem, Multiplier, PosState, ServeType, SizeCode, ZoomMode } from "@/types/pos";
 import { create } from "zustand";
 
 let refreshTimer: ReturnType<typeof setTimeout> | null = null;
@@ -24,6 +24,10 @@ export const usePosStore = create<PosState>((set, get) => ({
   breadcrumb: [{ label: "HOT ESP", id: "hot_esp" }],
   activeSize: "T",
   multiplier: 1,
+
+  // Order List & State
+  orderItems: [],
+  selectedOrderItemId: null,
 
   // Actions
   setZoomMode: (mode: ZoomMode) => set({ zoomMode: mode }),
@@ -59,21 +63,78 @@ export const usePosStore = create<PosState>((set, get) => ({
   },
 
   setActiveSubcategory: (subcategoryId: string | null, label?: string) => {
-    const { activeCategoryId, breadcrumb } = get();
-    if (!subcategoryId) {
-      const root = breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId };
-      set({ activeSubcategoryId: null, breadcrumb: [root] });
-      return;
+    const { activeCategoryId, breadcrumb, enableRefreshTransition } = get();
+
+    if (refreshTimer) {
+      clearTimeout(refreshTimer);
+      refreshTimer = null;
     }
 
-    const subBreadcrumb: BreadcrumbNode[] = [
-      breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId },
-      { label: label || subcategoryId, id: subcategoryId },
-    ];
-    set({ activeSubcategoryId: subcategoryId, breadcrumb: subBreadcrumb });
+    if (!subcategoryId) {
+      const root = breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId };
+      set({
+        activeSubcategoryId: null,
+        breadcrumb: [root],
+        isRefreshing: enableRefreshTransition,
+      });
+    } else {
+      const subBreadcrumb: BreadcrumbNode[] = [
+        breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId },
+        { label: label || subcategoryId, id: subcategoryId },
+      ];
+      set({
+        activeSubcategoryId: subcategoryId,
+        breadcrumb: subBreadcrumb,
+        isRefreshing: enableRefreshTransition,
+      });
+    }
+
+    if (enableRefreshTransition) {
+      refreshTimer = setTimeout(() => {
+        set({ isRefreshing: false });
+        refreshTimer = null;
+      }, 60);
+    }
   },
 
   setActiveSize: (size: SizeCode) => set({ activeSize: size }),
   setMultiplier: (multiplier: Multiplier) => set({ multiplier }),
   setServeType: (serveType: ServeType) => set({ currentServeType: serveType }),
+
+  addOrderItem: (item: MenuItem, size?: SizeCode, quantity?: number) => {
+    const currentSize = size || get().activeSize;
+    const currentMultiplier = quantity !== undefined ? quantity : get().multiplier;
+    const qty = Math.max(1, currentMultiplier);
+
+    const displayName =
+      item.hasSizes || /^[STGV]\s+/.test(item.name)
+        ? `${currentSize} ${item.baseName || item.name.replace(/^[STGV]\s+/, "")}`
+        : item.name;
+
+    const unitPrice =
+      item.hasSizes && item.prices?.[currentSize] !== undefined
+        ? item.prices[currentSize]!
+        : item.price ?? 0;
+
+    const newItemId = `order-item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const newOrderItem = {
+      id: newItemId,
+      menuItemId: item.id,
+      name: displayName,
+      size: item.hasSizes ? currentSize : undefined,
+      quantity: qty,
+      unitPrice,
+      totalPrice: unitPrice * qty,
+    };
+
+    set((state) => ({
+      orderItems: [...state.orderItems, newOrderItem],
+      selectedOrderItemId: newItemId,
+      multiplier: 1, // Reset multiplier after item addition
+    }));
+  },
+
+  selectOrderItem: (id: string | null) => set({ selectedOrderItemId: id }),
+  clearOrder: () => set({ orderItems: [], selectedOrderItemId: null }),
 }));
+
