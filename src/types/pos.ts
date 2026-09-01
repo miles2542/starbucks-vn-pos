@@ -1,4 +1,4 @@
-export type ZoomMode = "fit" | "100%" | "75%" | "50%";
+export type ZoomMode = "fit" | "100%" | "75%" | "50%" | "custom";
 
 export type ButtonVariant =
   | "default"
@@ -40,31 +40,38 @@ export interface BreadcrumbNode {
   id?: string;
 }
 
-export interface POSState {
+export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BTS";
+export type Multiplier = 1 | 2 | 3 | 4;
+export type SizeCode = "S" | "T" | "G" | "V";
+
+export interface PosState {
   // App Shell & Viewport
   zoomMode: ZoomMode;
   scale: number;
   enableRefreshTransition: boolean;
   isRefreshing: boolean;
-  
+
   // Header & Footer info
   terminalId: string;
   registerNumber: string;
   businessDate: string;
   cashierName: string;
-  currentServeType: string;
-  
+  currentServeType: ServeType;
+
   // Navigation & Category
   activeCategoryId: string;
+  activeSubcategoryId: string | null;
   breadcrumb: BreadcrumbNode[];
-  multiplier: number; // 1, 2, 3, 4
-  
+  activeSize: SizeCode;
+  multiplier: Multiplier;
+
   // Actions
   setZoomMode: (mode: ZoomMode) => void;
   setScale: (scale: number) => void;
   setEnableRefreshTransition: (enable: boolean) => void;
   setActiveCategory: (categoryId: string) => void;
-  setBreadcrumb: (path: BreadcrumbNode[]) => void;
-  setMultiplier: (multiplier: number) => void;
-  setServeType: (serveType: string) => void;
+  setActiveSubcategory: (subcategoryId: string | null, label?: string) => void;
+  setActiveSize: (size: SizeCode) => void;
+  setMultiplier: (multiplier: Multiplier) => void;
+  setServeType: (serveType: ServeType) => void;
 }

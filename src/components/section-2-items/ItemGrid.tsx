@@ -9,25 +9,29 @@ import { usePosStore } from "@/store/usePosStore";
 import type { MenuItem } from "@/types/pos";
 import React from "react";
 
+const MODIFIER_BY_ROW = new Map(MODIFIER_COLUMN_BUTTONS.map((b) => [b.row, b]));
+const SIZE_BY_ROW = new Map(SIZE_COLUMN_BUTTONS.map((b) => [b.row, b]));
+const TENDER_BY_COL = new Map(TENDER_ROW_BUTTONS.map((b) => [b.col, b]));
+
 export const ItemGrid: React.FC = () => {
   const activeCategoryId = usePosStore((state) => state.activeCategoryId);
   const multiplier = usePosStore((state) => state.multiplier);
   const isRefreshing = usePosStore((state) => state.isRefreshing);
   const setMultiplier = usePosStore((state) => state.setMultiplier);
-  const breadcrumb = usePosStore((state) => state.breadcrumb);
-  const setBreadcrumb = usePosStore((state) => state.setBreadcrumb);
+  const setActiveSubcategory = usePosStore((state) => state.setActiveSubcategory);
 
   const currentCategoryItems = MENU_ITEMS_BY_CATEGORY[activeCategoryId] || [];
-
-  // Build 5x6 matrix lookup
-  const getCenterItem = (row: number, col: number): MenuItem | undefined => {
-    if (isRefreshing) return undefined;
-    return currentCategoryItems.find((item) => item.row === row && item.col === col);
-  };
+  const itemMap = React.useMemo(() => {
+    const map = new Map<string, MenuItem>();
+    for (const item of currentCategoryItems) {
+      map.set(`${item.row}-${item.col}`, item);
+    }
+    return map;
+  }, [currentCategoryItems]);
 
   const handleCenterItemClick = (item: MenuItem) => {
     if (item.isSubcategory) {
-      setBreadcrumb([...breadcrumb, { label: item.name, id: item.id }]);
+      setActiveSubcategory(item.id, item.name);
     }
   };
 
@@ -47,7 +51,7 @@ export const ItemGrid: React.FC = () => {
 
             // 1. Column 1: Modifiers and Multipliers (Rows 1-6) & Empty on Row 7
             if (col === 1) {
-              const modBtn = MODIFIER_COLUMN_BUTTONS.find((b) => b.row === row);
+              const modBtn = MODIFIER_BY_ROW.get(row);
               if (!modBtn) {
                 return <PosButton key={cellKey} variant="empty" />;
               }
@@ -61,7 +65,7 @@ export const ItemGrid: React.FC = () => {
                   isActive={isMultiplierActive}
                   onClick={() => {
                     if (modBtn.multiplier !== undefined) {
-                      setMultiplier(modBtn.multiplier);
+                      setMultiplier(modBtn.multiplier as 1 | 2 | 3 | 4);
                     }
                   }}
                   className="text-xs font-black tracking-wide"
@@ -73,7 +77,7 @@ export const ItemGrid: React.FC = () => {
 
             // 2. Column 7: Sizes and Sets (Rows 1-6) & Empty on Row 7
             if (col === 7) {
-              const sizeBtn = SIZE_COLUMN_BUTTONS.find((b) => b.row === row);
+              const sizeBtn = SIZE_BY_ROW.get(row);
               if (!sizeBtn) {
                 return <PosButton key={cellKey} variant="empty" />;
               }
@@ -91,7 +95,7 @@ export const ItemGrid: React.FC = () => {
 
             // 3. Row 7: Tender Buttons (Cols 2-6)
             if (row === 7) {
-              const tenderBtn = TENDER_ROW_BUTTONS.find((b) => b.col === col);
+              const tenderBtn = TENDER_BY_COL.get(col);
               if (!tenderBtn) {
                 return <PosButton key={cellKey} variant="empty" />;
               }
@@ -108,10 +112,9 @@ export const ItemGrid: React.FC = () => {
             }
 
             // 4. Center 5x6 Item Matrix (Cols 2-6, Rows 1-6)
-            // Offset coordinates: centerRow = row, centerCol = col - 1 (1-5)
             const centerRow = row;
             const centerCol = col - 1;
-            const item = getCenterItem(centerRow, centerCol);
+            const item = isRefreshing ? undefined : itemMap.get(`${centerRow}-${centerCol}`);
 
             if (!item) {
               return (

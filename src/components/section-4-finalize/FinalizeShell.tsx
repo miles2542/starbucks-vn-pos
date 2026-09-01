@@ -5,7 +5,7 @@ import React from "react";
 export const FinalizeShell: React.FC = () => {
   return (
     <section
-      data-testid="section-4-finalize-panel"
+      data-testid="section-4-finalize-section"
       className="flex-[4] bg-[#cbd5e1]/40 border-r border-[#64748b] p-1 flex flex-col gap-1 select-none"
     >
       {/* Top Total & Order Navigation Row */}

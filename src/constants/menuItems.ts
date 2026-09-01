@@ -17,7 +17,7 @@ export const MENU_ITEMS_BY_CATEGORY: Record<string, MenuItem[]> = {
     { id: "doppio_macchiato", categoryId: "hot_esp", name: "DOPPIO MACCHIATO", price: 60000, row: 2, col: 5 },
 
     // Row 3
-    { id: "doppio_con_pana", categoryId: "hot_esp", name: "DOPPIO CON PANA", price: 60000, row: 3, col: 1 },
+    { id: "doppio_con_panna", categoryId: "hot_esp", name: "DOPPIO CON PANNA", price: 60000, row: 3, col: 1 },
     { id: "solo_con_panna", categoryId: "hot_esp", name: "SOLO CON PANNA", price: 50000, row: 3, col: 2 },
     { id: "t_flat_white", categoryId: "hot_esp", name: "T FLAT WHITE", price: 80000, row: 3, col: 3 },
     { id: "t_ahl", categoryId: "hot_esp", name: "T AHL", price: 85000, row: 3, col: 4 },

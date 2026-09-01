@@ -1,15 +1,16 @@
 import { usePosStore } from "@/store/usePosStore";
 import type { ZoomMode } from "@/types/pos";
-import { ChevronDown, ChevronUp, Eye, RefreshCw, ZoomIn } from "lucide-react";
+import { ChevronDown, ChevronUp, Eye, RefreshCw, Sliders, ZoomIn } from "lucide-react";
 import React, { useState } from "react";
 
 export const ViewControls: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const zoomMode = usePosStore((state) => state.zoomMode);
   const scale = usePosStore((state) => state.scale);
   const enableRefreshTransition = usePosStore((state) => state.enableRefreshTransition);
 
   const setZoomMode = usePosStore((state) => state.setZoomMode);
+  const setScale = usePosStore((state) => state.setScale);
   const setEnableRefreshTransition = usePosStore((state) => state.setEnableRefreshTransition);
 
   const zoomOptions: { label: string; mode: ZoomMode }[] = [
@@ -19,10 +20,16 @@ export const ViewControls: React.FC = () => {
     { label: "50%", mode: "50%" },
   ];
 
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Number.parseFloat(e.target.value);
+    setZoomMode("custom");
+    setScale(val);
+  };
+
   return (
     <div
       data-testid="view-controls"
-      className="fixed bottom-4 right-4 z-50 bg-neutral-900/90 backdrop-blur border border-neutral-700 text-neutral-100 rounded-lg shadow-2xl p-2.5 transition-all text-xs select-none"
+      className="fixed bottom-4 right-4 z-50 bg-neutral-900/90 backdrop-blur border border-neutral-700 text-neutral-100 rounded-lg shadow-2xl p-2.5 transition-all text-xs select-none w-72"
     >
       {/* Header bar of floating controls */}
       <div className="flex items-center justify-between gap-3 pb-1 border-b border-neutral-700/60 font-semibold">
@@ -46,7 +53,7 @@ export const ViewControls: React.FC = () => {
           <div>
             <div className="flex items-center justify-between mb-1.5 text-neutral-400">
               <span className="flex items-center gap-1">
-                <ZoomIn className="w-3 h-3" /> Zoom Scale:
+                <ZoomIn className="w-3 h-3" /> Zoom Preset:
               </span>
               <span className="font-mono text-sky-400 font-bold">{Math.round(scale * 100)}%</span>
             </div>
@@ -66,6 +73,26 @@ export const ViewControls: React.FC = () => {
                 </button>
               ))}
             </div>
+          </div>
+
+          {/* Continuous Manual Scale Slider */}
+          <div className="pt-1 border-t border-neutral-800">
+            <div className="flex items-center justify-between mb-1 text-neutral-400">
+              <span className="flex items-center gap-1">
+                <Sliders className="w-3 h-3 text-sky-400" /> Scale Slider:
+              </span>
+              <span className="font-mono text-neutral-300">{Math.round(scale * 100)}%</span>
+            </div>
+            <input
+              type="range"
+              min="0.25"
+              max="1.5"
+              step="0.05"
+              value={scale}
+              onChange={handleSliderChange}
+              data-testid="zoom-scale-slider"
+              className="w-full accent-sky-500 cursor-pointer h-1.5 bg-neutral-700 rounded-lg appearance-none"
+            />
           </div>
 
           {/* 60ms Transition Toggle */}

@@ -1,10 +1,10 @@
 import { CATEGORIES } from "@/constants/categories";
-import type { BreadcrumbNode, POSState, ZoomMode } from "@/types/pos";
+import type { BreadcrumbNode, Multiplier, PosState, ServeType, SizeCode, ZoomMode } from "@/types/pos";
 import { create } from "zustand";
 
 let refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
-export const usePosStore = create<POSState>((set, get) => ({
+export const usePosStore = create<PosState>((set, get) => ({
   // App Shell & Viewport
   zoomMode: "fit",
   scale: 1,
@@ -20,7 +20,9 @@ export const usePosStore = create<POSState>((set, get) => ({
 
   // Navigation & Category
   activeCategoryId: "hot_esp",
+  activeSubcategoryId: null,
   breadcrumb: [{ label: "HOT ESP", id: "hot_esp" }],
+  activeSize: "T",
   multiplier: 1,
 
   // Actions
@@ -40,27 +42,38 @@ export const usePosStore = create<POSState>((set, get) => ({
       refreshTimer = null;
     }
 
-    if (enableRefreshTransition) {
-      set({
-        isRefreshing: true,
-        activeCategoryId: categoryId,
-        breadcrumb: newBreadcrumb,
-      });
+    set({
+      isRefreshing: enableRefreshTransition,
+      activeCategoryId: categoryId,
+      activeSubcategoryId: null,
+      breadcrumb: newBreadcrumb,
+      activeSize: "T", // Reset size to Tall default on category change
+    });
 
+    if (enableRefreshTransition) {
       refreshTimer = setTimeout(() => {
         set({ isRefreshing: false });
         refreshTimer = null;
       }, 60);
-    } else {
-      set({
-        isRefreshing: false,
-        activeCategoryId: categoryId,
-        breadcrumb: newBreadcrumb,
-      });
     }
   },
 
-  setBreadcrumb: (path: BreadcrumbNode[]) => set({ breadcrumb: path }),
-  setMultiplier: (multiplier: number) => set({ multiplier }),
-  setServeType: (serveType: string) => set({ currentServeType: serveType }),
+  setActiveSubcategory: (subcategoryId: string | null, label?: string) => {
+    const { activeCategoryId, breadcrumb } = get();
+    if (!subcategoryId) {
+      const root = breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId };
+      set({ activeSubcategoryId: null, breadcrumb: [root] });
+      return;
+    }
+
+    const subBreadcrumb: BreadcrumbNode[] = [
+      breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId },
+      { label: label || subcategoryId, id: subcategoryId },
+    ];
+    set({ activeSubcategoryId: subcategoryId, breadcrumb: subBreadcrumb });
+  },
+
+  setActiveSize: (size: SizeCode) => set({ activeSize: size }),
+  setMultiplier: (multiplier: Multiplier) => set({ multiplier }),
+  setServeType: (serveType: ServeType) => set({ currentServeType: serveType }),
 }));
