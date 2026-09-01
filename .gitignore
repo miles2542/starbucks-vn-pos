@@ -1,0 +1,17 @@
+# Dependencies & builds
+node_modules/
+dist/
+build/
+.cache/
+
+# Internal agent/dev folders
+dev_docs/
+logs/
+temp/
+
+# Environment & OS
+.env
+.env.local
+.env.*.local
+.DS_Store
+Thumbs.db
