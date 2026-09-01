@@ -2,18 +2,40 @@ import { usePosStore } from "@/store/usePosStore";
 import clsx from "clsx";
 import React from "react";
 
+const getServeTypeSuffix = (itemServeType?: string, globalServeType?: string): string => {
+  if (!itemServeType || itemServeType === globalServeType || globalServeType === "Not Set") {
+    return "";
+  }
+  switch (itemServeType) {
+    case "BYO":
+      return "B";
+    case "To Go":
+      return "T";
+    case "For Here":
+      return "H";
+    case "B2BTS":
+      return "S";
+    default:
+      return "";
+  }
+};
+
 export const OrderDisplayShell: React.FC = () => {
   const currentServeType = usePosStore((state) => state.currentServeType);
   const orderItems = usePosStore((state) => state.orderItems);
-  const selectedOrderItemId = usePosStore((state) => state.selectedOrderItemId);
-  const selectOrderItem = usePosStore((state) => state.selectOrderItem);
+  const selectedLineId = usePosStore((state) => state.selectedLineId);
+  const selectLine = usePosStore((state) => state.selectLine);
 
   const totalQuantity = React.useMemo(() => {
     return orderItems.reduce((sum, item) => sum + item.quantity, 0);
   }, [orderItems]);
 
   const totalAmount = React.useMemo(() => {
-    return orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
+    return orderItems.reduce((sum, item) => {
+      const itemBaseTotal = item.unitPrice * item.quantity;
+      const modifiersTotal = (item.modifiers || []).reduce((mSum, mod) => mSum + mod.price, 0);
+      return sum + itemBaseTotal + modifiersTotal;
+    }, 0);
   }, [orderItems]);
 
   const taxAmount = React.useMemo(() => {
@@ -46,34 +68,77 @@ export const OrderDisplayShell: React.FC = () => {
       <div className="flex-1 bg-[#8f9fae] p-1 overflow-y-auto font-sans flex flex-col justify-between">
         <div className="flex flex-col gap-0.5" data-testid="order-items-list">
           {orderItems.map((item, index) => {
-            const isSelected = item.id === selectedOrderItemId;
+            const isItemSelected = selectedLineId === item.id;
+            const suffix = getServeTypeSuffix(item.serveType, currentServeType);
+            const lineLabel = `${index + 1}${suffix}`;
 
             return (
-              <div
-                key={item.id}
-                data-testid={`order-item-row-${item.id}`}
-                onClick={() => selectOrderItem(item.id)}
-                className={clsx(
-                  "flex items-center px-2 py-1 cursor-pointer text-xs font-bold transition-colors select-none",
-                  isSelected
-                    ? "bg-[#a2c374] text-[#111827] shadow-sm"
-                    : "bg-[#cfd7df] text-[#1e293b] hover:bg-[#d8e0e7]",
-                )}
-              >
-                {/* Line Number */}
-                <span className="w-6 text-left shrink-0">{index + 1}</span>
+              <React.Fragment key={item.id}>
+                {/* Parent Beverage Row */}
+                <div
+                  data-testid={`order-item-row-${item.id}`}
+                  onClick={() => selectLine(item.id)}
+                  className={clsx(
+                    "flex items-center px-2 py-1 cursor-pointer text-xs font-bold transition-colors select-none",
+                    isItemSelected
+                      ? "bg-[#a2c374] text-[#111827] shadow-sm"
+                      : "bg-[#cfd7df] text-[#1e293b] hover:bg-[#d8e0e7]",
+                  )}
+                >
+                  {/* Line Number */}
+                  <span data-testid="order-item-line-number" className="w-6 text-left shrink-0">
+                    {lineLabel}
+                  </span>
 
-                {/* Item Name */}
-                <span className="flex-1 text-left truncate pr-1">{item.name}</span>
+                  {/* Item Name */}
+                  <span data-testid="order-item-name" className="flex-1 text-left truncate pr-1">
+                    {item.name}
+                  </span>
 
-                {/* Quantity */}
-                <span className="w-8 text-center shrink-0">{item.quantity}</span>
+                  {/* Quantity */}
+                  <span className="w-8 text-center shrink-0">{item.quantity}</span>
 
-                {/* Price */}
-                <span className="w-20 text-right shrink-0">
-                  {item.totalPrice.toLocaleString("en-US")}
-                </span>
-              </div>
+                  {/* Price */}
+                  <span className="w-20 text-right shrink-0">
+                    {(item.unitPrice * item.quantity).toLocaleString("en-US")}
+                  </span>
+                </div>
+
+                {/* Modifiers Sub-lines */}
+                {(item.modifiers || []).map((mod) => {
+                  const isModSelected = selectedLineId === mod.id;
+
+                  return (
+                    <div
+                      key={mod.id}
+                      data-testid={`order-modifier-row-${mod.id}`}
+                      onClick={() => selectLine(mod.id)}
+                      className={clsx(
+                        "flex items-center px-2 py-0.5 cursor-pointer text-xs font-semibold transition-colors select-none pl-6",
+                        isModSelected
+                          ? "bg-[#a2c374] text-[#111827] shadow-sm"
+                          : "bg-[#cfd7df]/80 text-[#1e293b] hover:bg-[#d8e0e7]",
+                      )}
+                    >
+                      {/* Blank line number column for alignment */}
+                      <span className="w-4 text-left shrink-0" />
+
+                      {/* Indented Modifier Name */}
+                      <span className="flex-1 text-left truncate pr-1 text-[#334155]">
+                        &gt; {mod.name}
+                      </span>
+
+                      {/* Blank quantity */}
+                      <span className="w-8 text-center shrink-0" />
+
+                      {/* Modifier Price */}
+                      <span className="w-20 text-right shrink-0 text-[#334155]">
+                        {mod.price.toLocaleString("en-US")}
+                      </span>
+                    </div>
+                  );
+                })}
+              </React.Fragment>
             );
           })}
         </div>
@@ -109,4 +174,3 @@ export const OrderDisplayShell: React.FC = () => {
     </section>
   );
 };
-

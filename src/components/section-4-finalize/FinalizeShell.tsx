@@ -1,15 +1,26 @@
 import { PosButton } from "@/components/common/PosButton";
 import { usePosStore } from "@/store/usePosStore";
+import clsx from "clsx";
 import { ArrowBigRight, ArrowDown, ArrowUp, ChevronsDown, ChevronsUp } from "lucide-react";
 import React from "react";
 
 export const FinalizeShell: React.FC = () => {
   const orderItems = usePosStore((state) => state.orderItems);
+  const currentServeType = usePosStore((state) => state.currentServeType);
   const clearOrder = usePosStore((state) => state.clearOrder);
+  const voidSelectedLine = usePosStore((state) => state.voidSelectedLine);
+  const moveSelectedLine = usePosStore((state) => state.moveSelectedLine);
+  const openModal = usePosStore((state) => state.openModal);
 
   const totalAmount = React.useMemo(() => {
-    return orderItems.reduce((sum, item) => sum + item.totalPrice, 0);
+    return orderItems.reduce((sum, item) => {
+      const itemBase = item.unitPrice * item.quantity;
+      const modTotal = (item.modifiers || []).reduce((mSum, m) => mSum + m.price, 0);
+      return sum + itemBase + modTotal;
+    }, 0);
   }, [orderItems]);
+
+  const isServeTypeItemDisabled = currentServeType === "Not Set";
 
   return (
     <section
@@ -19,16 +30,36 @@ export const FinalizeShell: React.FC = () => {
       {/* Top Total & Order Navigation Row */}
       <div className="h-[48px] flex items-stretch gap-1">
         <div className="grid grid-cols-4 gap-1 w-[45%]">
-          <PosButton variant="nav-blue" className="p-0">
+          <PosButton
+            variant="nav-blue"
+            className="p-0"
+            onClick={() => moveSelectedLine("up")}
+            aria-label="Move line up"
+          >
             <ArrowUp className="w-5 h-5 text-amber-300 stroke-[3]" />
           </PosButton>
-          <PosButton variant="nav-blue" className="p-0">
+          <PosButton
+            variant="nav-blue"
+            className="p-0"
+            onClick={() => moveSelectedLine("top")}
+            aria-label="Move line to top"
+          >
             <ChevronsUp className="w-5 h-5 text-amber-300 stroke-[3]" />
           </PosButton>
-          <PosButton variant="nav-blue" className="p-0">
+          <PosButton
+            variant="nav-blue"
+            className="p-0"
+            onClick={() => moveSelectedLine("bottom")}
+            aria-label="Move line to bottom"
+          >
             <ChevronsDown className="w-5 h-5 text-amber-300 stroke-[3]" />
           </PosButton>
-          <PosButton variant="nav-blue" className="p-0">
+          <PosButton
+            variant="nav-blue"
+            className="p-0"
+            onClick={() => moveSelectedLine("down")}
+            aria-label="Move line down"
+          >
             <ArrowDown className="w-5 h-5 text-amber-300 stroke-[3]" />
           </PosButton>
         </div>
@@ -51,7 +82,11 @@ export const FinalizeShell: React.FC = () => {
         >
           CLEAR ALL
         </PosButton>
-        <PosButton variant="tender-cyan" className="text-xs font-black">
+        <PosButton
+          variant="tender-cyan"
+          className="text-xs font-black"
+          onClick={() => voidSelectedLine()}
+        >
           Void
         </PosButton>
         <PosButton variant="default" className="text-xs font-black">
@@ -67,10 +102,26 @@ export const FinalizeShell: React.FC = () => {
         <PosButton variant="default" className="text-xs font-black">
           Recall Receipt
         </PosButton>
-        <PosButton variant="serve-yellow" className="text-xs font-black">
+        <PosButton
+          variant="serve-yellow"
+          className="text-xs font-black"
+          onClick={() => openModal("serve_type_all")}
+        >
           Serve type/All
         </PosButton>
-        <PosButton variant="serve-yellow" className="text-xs font-black">
+        <PosButton
+          variant="serve-yellow"
+          className={clsx(
+            "text-xs font-black",
+            isServeTypeItemDisabled && "opacity-50 cursor-not-allowed",
+          )}
+          disabled={isServeTypeItemDisabled}
+          onClick={() => {
+            if (!isServeTypeItemDisabled) {
+              openModal("serve_type_item");
+            }
+          }}
+        >
           Serve type/item
         </PosButton>
         <PosButton variant="serve-yellow" className="text-xs font-black">

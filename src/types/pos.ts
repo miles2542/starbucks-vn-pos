@@ -44,6 +44,13 @@ export interface BreadcrumbNode {
   id?: string;
 }
 
+export interface OrderModifier {
+  id: string;
+  modifierId: string;
+  name: string;
+  price: number;
+}
+
 export interface OrderItem {
   id: string;
   menuItemId: string;
@@ -52,11 +59,14 @@ export interface OrderItem {
   quantity: number;
   unitPrice: number;
   totalPrice: number;
+  modifiers: OrderModifier[];
+  serveType?: ServeType;
 }
 
 export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BTS";
 export type Multiplier = 1 | 2 | 3 | 4;
 export type SizeCode = "S" | "T" | "G" | "V";
+export type ModalType = "serve_type_all" | "serve_type_item" | "change_size" | null;
 
 export interface PosState {
   // App Shell & Viewport
@@ -79,9 +89,17 @@ export interface PosState {
   activeSize: SizeCode;
   multiplier: Multiplier;
 
+  // Modifier state
+  isModifierMode: boolean;
+  activeModifierPage: string | null;
+
+  // Modal state
+  activeModal: ModalType;
+
   // Order List & State
   orderItems: OrderItem[];
-  selectedOrderItemId: string | null;
+  selectedOrderItemId: string | null; // For backward compatibility / alias
+  selectedLineId: string | null; // Can be item id or modifier id
 
   // Actions
   setZoomMode: (mode: ZoomMode) => void;
@@ -94,6 +112,21 @@ export interface PosState {
   setServeType: (serveType: ServeType) => void;
   addOrderItem: (item: MenuItem, size?: SizeCode, quantity?: number) => void;
   selectOrderItem: (id: string | null) => void;
+  selectLine: (id: string | null) => void;
   clearOrder: () => void;
+
+  // Modifier actions
+  openModifierMode: (page?: string) => void;
+  closeModifierMode: () => void;
+  setModifierPage: (page: string, label?: string) => void;
+  addModifier: (modifier: { id: string; name: string; price: number }) => void;
+
+  // Ticket 06 operations (void, change size, reorder, item serve type, modals)
+  voidSelectedLine: () => void;
+  changeSelectedItemSize: (newSize: SizeCode) => void;
+  moveSelectedLine: (direction: "up" | "down" | "top" | "bottom") => void;
+  setItemServeType: (itemId: string, serveType: ServeType) => void;
+  openModal: (modal: ModalType) => void;
+  closeModal: () => void;
 }
 
