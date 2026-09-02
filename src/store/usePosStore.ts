@@ -1,5 +1,14 @@
 import { CATEGORIES } from "@/constants/categories";
-import { MENU_ITEMS_BY_CATEGORY } from "@/constants/menuItems";
+import {
+  formatOrderNumber,
+  getInitialOrderSequence,
+  incrementOrderSequence,
+} from "@/store/orderSequence";
+import {
+  changeDrinkSizeInOrder,
+  reorderDrinkInList,
+  voidLineInOrder,
+} from "@/store/orderOperations";
 import type {
   BreadcrumbNode,
   MenuItem,
@@ -15,6 +24,8 @@ import type {
 import { create } from "zustand";
 
 let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+
+const initialSequence = getInitialOrderSequence();
 
 export const usePosStore = create<PosState>((set, get) => ({
   // App Shell & Viewport
@@ -48,6 +59,10 @@ export const usePosStore = create<PosState>((set, get) => ({
   orderItems: [],
   selectedOrderItemId: null,
   selectedLineId: null,
+
+  // Order Number & Sequence
+  orderSequence: initialSequence,
+  orderNumber: formatOrderNumber(initialSequence),
 
   // Actions
   setZoomMode: (mode: ZoomMode) => set({ zoomMode: mode }),
@@ -181,12 +196,25 @@ export const usePosStore = create<PosState>((set, get) => ({
     });
   },
 
-  clearOrder: () =>
-    set({
-      orderItems: [],
-      selectedOrderItemId: null,
-      selectedLineId: null,
-    }),
+  clearOrder: () => {
+    const { orderItems, orderSequence } = get();
+    if (orderItems.length > 0) {
+      const next = incrementOrderSequence(orderSequence);
+      set({
+        orderItems: [],
+        selectedOrderItemId: null,
+        selectedLineId: null,
+        orderSequence: next.orderSequence,
+        orderNumber: next.orderNumber,
+      });
+    } else {
+      set({
+        orderItems: [],
+        selectedOrderItemId: null,
+        selectedLineId: null,
+      });
+    }
+  },
 
   openModifierMode: (page = "root") => {
     const { orderItems, selectedLineId, breadcrumb } = get();
@@ -273,143 +301,45 @@ export const usePosStore = create<PosState>((set, get) => ({
   },
 
   voidSelectedLine: () => {
-    const { orderItems, selectedLineId } = get();
-    if (orderItems.length === 0) return;
+    const { orderItems, selectedLineId, orderSequence } = get();
+    const result = voidLineInOrder(orderItems, selectedLineId);
 
-    const activeLineId = selectedLineId || orderItems[orderItems.length - 1].id;
-
-    // Check if activeLineId is a modifier
-    let foundModParentIndex = -1;
-    let foundModIndex = -1;
-
-    for (let i = 0; i < orderItems.length; i++) {
-      const mIdx = orderItems[i].modifiers.findIndex((m) => m.id === activeLineId);
-      if (mIdx !== -1) {
-        foundModParentIndex = i;
-        foundModIndex = mIdx;
-        break;
-      }
-    }
-
-    if (foundModParentIndex !== -1) {
-      const updatedOrderItems = [...orderItems];
-      const parent = updatedOrderItems[foundModParentIndex];
-      const updatedMods = parent.modifiers.filter((_, idx) => idx !== foundModIndex);
-      updatedOrderItems[foundModParentIndex] = {
-        ...parent,
-        modifiers: updatedMods,
-      };
-
-      const nextSelectedLineId =
-        foundModIndex > 0 ? updatedMods[foundModIndex - 1].id : parent.id;
+    if (result.wasEmptied) {
+      const next = incrementOrderSequence(orderSequence);
       set({
-        orderItems: updatedOrderItems,
-        selectedLineId: nextSelectedLineId,
-        selectedOrderItemId: parent.id,
+        orderItems: result.updatedOrderItems,
+        selectedLineId: result.nextSelectedLineId,
+        selectedOrderItemId: result.nextSelectedItemId,
+        orderSequence: next.orderSequence,
+        orderNumber: next.orderNumber,
       });
-      return;
-    }
-
-    // Otherwise it's a parent beverage / item
-    const itemIndex = orderItems.findIndex((item) => item.id === activeLineId);
-    if (itemIndex !== -1) {
-      const updatedOrderItems = orderItems.filter((_, idx) => idx !== itemIndex);
-      let nextSelectedLineId: string | null = null;
-      let nextSelectedItemId: string | null = null;
-
-      if (updatedOrderItems.length > 0) {
-        const nextIndex = Math.min(itemIndex, updatedOrderItems.length - 1);
-        nextSelectedLineId = updatedOrderItems[nextIndex].id;
-        nextSelectedItemId = updatedOrderItems[nextIndex].id;
-      }
-
+    } else {
       set({
-        orderItems: updatedOrderItems,
-        selectedLineId: nextSelectedLineId,
-        selectedOrderItemId: nextSelectedItemId,
+        orderItems: result.updatedOrderItems,
+        selectedLineId: result.nextSelectedLineId,
+        selectedOrderItemId: result.nextSelectedItemId,
       });
     }
   },
 
   changeSelectedItemSize: (newSize: SizeCode) => {
     const { orderItems, selectedLineId } = get();
-    if (orderItems.length === 0) return;
-
-    const targetItemIndex = orderItems.findIndex(
-      (item) => item.id === selectedLineId || item.modifiers.some((m) => m.id === selectedLineId),
-    );
-    if (targetItemIndex === -1) return;
-
-    const item = orderItems[targetItemIndex];
-    let menuItemDef: MenuItem | undefined;
-    for (const catItems of Object.values(MENU_ITEMS_BY_CATEGORY)) {
-      const found = catItems.find((m) => m.id === item.menuItemId);
-      if (found) {
-        menuItemDef = found;
-        break;
-      }
-    }
-
-    const baseName = menuItemDef?.baseName || item.name.replace(/^[STGV]\s+/, "");
-    const newDisplayName = `${newSize} ${baseName}`;
-
-    let newUnitPrice = item.unitPrice;
-    if (menuItemDef?.prices && menuItemDef.prices[newSize] !== undefined) {
-      newUnitPrice = menuItemDef.prices[newSize]!;
-    }
-
-    const updatedOrderItems = [...orderItems];
-    updatedOrderItems[targetItemIndex] = {
-      ...item,
-      size: newSize,
-      name: newDisplayName,
-      unitPrice: newUnitPrice,
-      totalPrice: newUnitPrice * item.quantity,
-    };
-
+    const updated = changeDrinkSizeInOrder(orderItems, selectedLineId, newSize);
     set({
-      orderItems: updatedOrderItems,
+      orderItems: updated,
       activeSize: newSize,
     });
   },
 
-  moveSelectedLine: (direction: "up" | "down" | "top" | "bottom") => {
+  reorderDrink: (direction: "up" | "down" | "top" | "bottom") => {
     const { orderItems, selectedLineId } = get();
-    if (orderItems.length === 0) return;
+    const updated = reorderDrinkInList(orderItems, selectedLineId, direction);
+    set({ orderItems: updated });
+  },
 
-    const allLines: string[] = [];
-    for (const item of orderItems) {
-      allLines.push(item.id);
-      for (const mod of item.modifiers) {
-        allLines.push(mod.id);
-      }
-    }
-
-    if (allLines.length === 0) return;
-
-    const currentIndex = selectedLineId ? allLines.indexOf(selectedLineId) : -1;
-    let nextIndex = 0;
-
-    switch (direction) {
-      case "up":
-        nextIndex = currentIndex <= 0 ? 0 : currentIndex - 1;
-        break;
-      case "down":
-        nextIndex =
-          currentIndex === -1 || currentIndex >= allLines.length - 1
-            ? allLines.length - 1
-            : currentIndex + 1;
-        break;
-      case "top":
-        nextIndex = 0;
-        break;
-      case "bottom":
-        nextIndex = allLines.length - 1;
-        break;
-    }
-
-    const nextId = allLines[nextIndex];
-    get().selectLine(nextId);
+  moveSelectedLine: (direction: "up" | "down" | "top" | "bottom") => {
+    // Delegates to reorderDrink as per Ticket 07 specs
+    get().reorderDrink(direction);
   },
 
   setItemServeType: (itemId: string, serveType: ServeType) => {

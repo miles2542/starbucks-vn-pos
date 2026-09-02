@@ -25,6 +25,7 @@ export const OrderDisplayShell: React.FC = () => {
   const orderItems = usePosStore((state) => state.orderItems);
   const selectedLineId = usePosStore((state) => state.selectedLineId);
   const selectLine = usePosStore((state) => state.selectLine);
+  const orderNumber = usePosStore((state) => state.orderNumber);
 
   const totalQuantity = React.useMemo(() => {
     return orderItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -60,7 +61,7 @@ export const OrderDisplayShell: React.FC = () => {
           data-testid="order-number"
           className="w-1/2 flex items-center justify-end px-3 text-[#ff7777] uppercase tracking-wide truncate"
         >
-          Order No:0100002787
+          Order No:{orderNumber}
         </div>
       </div>
 

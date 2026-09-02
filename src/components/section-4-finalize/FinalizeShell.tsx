@@ -1,6 +1,5 @@
 import { PosButton } from "@/components/common/PosButton";
 import { usePosStore } from "@/store/usePosStore";
-import clsx from "clsx";
 import { ArrowBigRight, ArrowDown, ArrowUp, ChevronsDown, ChevronsUp } from "lucide-react";
 import React from "react";
 
@@ -9,7 +8,7 @@ export const FinalizeShell: React.FC = () => {
   const currentServeType = usePosStore((state) => state.currentServeType);
   const clearOrder = usePosStore((state) => state.clearOrder);
   const voidSelectedLine = usePosStore((state) => state.voidSelectedLine);
-  const moveSelectedLine = usePosStore((state) => state.moveSelectedLine);
+  const reorderDrink = usePosStore((state) => state.reorderDrink);
   const openModal = usePosStore((state) => state.openModal);
 
   const totalAmount = React.useMemo(() => {
@@ -20,7 +19,11 @@ export const FinalizeShell: React.FC = () => {
     }, 0);
   }, [orderItems]);
 
-  const isServeTypeItemDisabled = currentServeType === "Not Set";
+  const handleServeTypeItemClick = () => {
+    if (currentServeType !== "Not Set") {
+      openModal("serve_type_item");
+    }
+  };
 
   return (
     <section
@@ -33,7 +36,7 @@ export const FinalizeShell: React.FC = () => {
           <PosButton
             variant="nav-blue"
             className="p-0"
-            onClick={() => moveSelectedLine("up")}
+            onClick={() => reorderDrink("up")}
             aria-label="Move line up"
           >
             <ArrowUp className="w-5 h-5 text-amber-300 stroke-[3]" />
@@ -41,7 +44,7 @@ export const FinalizeShell: React.FC = () => {
           <PosButton
             variant="nav-blue"
             className="p-0"
-            onClick={() => moveSelectedLine("top")}
+            onClick={() => reorderDrink("top")}
             aria-label="Move line to top"
           >
             <ChevronsUp className="w-5 h-5 text-amber-300 stroke-[3]" />
@@ -49,7 +52,7 @@ export const FinalizeShell: React.FC = () => {
           <PosButton
             variant="nav-blue"
             className="p-0"
-            onClick={() => moveSelectedLine("bottom")}
+            onClick={() => reorderDrink("bottom")}
             aria-label="Move line to bottom"
           >
             <ChevronsDown className="w-5 h-5 text-amber-300 stroke-[3]" />
@@ -57,7 +60,7 @@ export const FinalizeShell: React.FC = () => {
           <PosButton
             variant="nav-blue"
             className="p-0"
-            onClick={() => moveSelectedLine("down")}
+            onClick={() => reorderDrink("down")}
             aria-label="Move line down"
           >
             <ArrowDown className="w-5 h-5 text-amber-300 stroke-[3]" />
@@ -111,16 +114,8 @@ export const FinalizeShell: React.FC = () => {
         </PosButton>
         <PosButton
           variant="serve-yellow"
-          className={clsx(
-            "text-xs font-black",
-            isServeTypeItemDisabled && "opacity-50 cursor-not-allowed",
-          )}
-          disabled={isServeTypeItemDisabled}
-          onClick={() => {
-            if (!isServeTypeItemDisabled) {
-              openModal("serve_type_item");
-            }
-          }}
+          className="text-xs font-black"
+          onClick={handleServeTypeItemClick}
         >
           Serve type/item
         </PosButton>

@@ -52,9 +52,11 @@ describe("Ticket 06: Order Finalization, Serve Type Modals, and Line Operations"
     it("handles Serve type/item override and displays suffix when differing from global", () => {
       render(<App />);
 
-      // 1. Initially disabled when global is 'Not Set'
+      // 1. Visually enabled even when global is 'Not Set', but tapping is a no-op
       const itemServeBtn = screen.getByRole("button", { name: "Serve type/item" });
-      expect(itemServeBtn).toBeDisabled();
+      expect(itemServeBtn).not.toBeDisabled();
+      fireEvent.click(itemServeBtn);
+      expect(screen.queryByTestId("modal-serve-type")).not.toBeInTheDocument();
 
       // 2. Set global serve type to 'To Go'
       fireEvent.click(screen.getByRole("button", { name: "Serve type/All" }));
@@ -112,7 +114,7 @@ describe("Ticket 06: Order Finalization, Serve Type Modals, and Line Operations"
   });
 
   describe("Section IV Line Operations", () => {
-    it("navigates selection up, down, top, and bottom with arrow buttons", () => {
+    it("reorders drinks up, down, top, and bottom with arrow buttons", () => {
       render(<App />);
 
       // Add 2 drinks with modifiers
@@ -123,30 +125,29 @@ describe("Ticket 06: Order Finalization, Serve Type Modals, and Line Operations"
       fireEvent.click(screen.getByRole("button", { name: "HOT ESP" }));
       fireEvent.click(screen.getByRole("button", { name: "T CAPPUCCINO" }));
 
-      const items = usePosStore.getState().orderItems;
-      const latteId = items[0].id;
-      const modId = items[0].modifiers[0].id;
-      const capId = items[1].id;
+      // Cappuccino is at index 1, Latte is at index 0
+      expect(usePosStore.getState().orderItems[0].name).toBe("T LATTE");
+      expect(usePosStore.getState().orderItems[1].name).toBe("T CAPPUCCINO");
 
-      // Top button
-      fireEvent.click(screen.getByRole("button", { name: "Move line to top" }));
-      expect(usePosStore.getState().selectedLineId).toBe(latteId);
-
-      // Down button
-      fireEvent.click(screen.getByRole("button", { name: "Move line down" }));
-      expect(usePosStore.getState().selectedLineId).toBe(modId);
-
-      // Down button again
-      fireEvent.click(screen.getByRole("button", { name: "Move line down" }));
-      expect(usePosStore.getState().selectedLineId).toBe(capId);
-
-      // Up button
+      // Move Cappuccino up -> Cappuccino index 0, Latte index 1
       fireEvent.click(screen.getByRole("button", { name: "Move line up" }));
-      expect(usePosStore.getState().selectedLineId).toBe(modId);
+      expect(usePosStore.getState().orderItems[0].name).toBe("T CAPPUCCINO");
+      expect(usePosStore.getState().orderItems[1].name).toBe("T LATTE");
 
-      // Bottom button
+      // Move Cappuccino down -> Cappuccino index 1, Latte index 0
+      fireEvent.click(screen.getByRole("button", { name: "Move line down" }));
+      expect(usePosStore.getState().orderItems[0].name).toBe("T LATTE");
+      expect(usePosStore.getState().orderItems[1].name).toBe("T CAPPUCCINO");
+
+      // Move to top
+      fireEvent.click(screen.getByRole("button", { name: "Move line to top" }));
+      expect(usePosStore.getState().orderItems[0].name).toBe("T CAPPUCCINO");
+      expect(usePosStore.getState().orderItems[1].name).toBe("T LATTE");
+
+      // Move to bottom
       fireEvent.click(screen.getByRole("button", { name: "Move line to bottom" }));
-      expect(usePosStore.getState().selectedLineId).toBe(capId);
+      expect(usePosStore.getState().orderItems[0].name).toBe("T LATTE");
+      expect(usePosStore.getState().orderItems[1].name).toBe("T CAPPUCCINO");
     });
 
     it("voids individual modifier line without deleting parent drink", () => {

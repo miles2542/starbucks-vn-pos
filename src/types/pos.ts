@@ -101,6 +101,10 @@ export interface PosState {
   selectedOrderItemId: string | null; // For backward compatibility / alias
   selectedLineId: string | null; // Can be item id or modifier id
 
+  // Order Number & Sequence
+  orderSequence: number;
+  orderNumber: string;
+
   // Actions
   setZoomMode: (mode: ZoomMode) => void;
   setScale: (scale: number) => void;
@@ -121,10 +125,11 @@ export interface PosState {
   setModifierPage: (page: string, label?: string) => void;
   addModifier: (modifier: { id: string; name: string; price: number }) => void;
 
-  // Ticket 06 operations (void, change size, reorder, item serve type, modals)
+  // Ticket 06 & 07 operations (void, change size, reorder, item serve type, modals)
   voidSelectedLine: () => void;
   changeSelectedItemSize: (newSize: SizeCode) => void;
   moveSelectedLine: (direction: "up" | "down" | "top" | "bottom") => void;
+  reorderDrink: (direction: "up" | "down" | "top" | "bottom") => void;
   setItemServeType: (itemId: string, serveType: ServeType) => void;
   openModal: (modal: ModalType) => void;
   closeModal: () => void;
