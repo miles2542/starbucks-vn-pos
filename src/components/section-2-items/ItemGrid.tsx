@@ -5,6 +5,7 @@ import {
   SIZE_COLUMN_BUTTONS,
   TENDER_ROW_BUTTONS,
 } from "@/constants/menuItems";
+import { PAYMENT_ITEMS_BY_TAB } from "@/constants/menus/payment";
 import { type ModifierItem, MODIFIER_PAGES } from "@/constants/modifiers";
 import { usePosStore } from "@/store/usePosStore";
 import type { MenuItem } from "@/types/pos";
@@ -26,6 +27,9 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
   const isRefreshing = usePosStore((state) => state.isRefreshing);
   const isModifierMode = usePosStore((state) => state.isModifierMode);
   const activeModifierPage = usePosStore((state) => state.activeModifierPage);
+  const isPaymentMode = usePosStore((state) => state.isPaymentMode);
+  const activePaymentTab = usePosStore((state) => state.activePaymentTab);
+  const completePayment = usePosStore((state) => state.completePayment);
   const selectedLineId = usePosStore((state) => state.selectedLineId);
 
   const setMultiplier = usePosStore((state) => state.setMultiplier);
@@ -37,9 +41,11 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
   const addModifier = usePosStore((state) => state.addModifier);
   const openModal = usePosStore((state) => state.openModal);
 
-  // If subcategory is active, load items for that subcategory key, else active category
-  const lookupKey = activeSubcategoryId || activeCategoryId;
-  const currentCategoryItems = MENU_ITEMS_BY_CATEGORY[lookupKey] || [];
+  // If payment mode is active, load items for activePaymentTab
+  const currentCategoryItems = isPaymentMode
+    ? PAYMENT_ITEMS_BY_TAB[activePaymentTab] || []
+    : MENU_ITEMS_BY_CATEGORY[activeSubcategoryId || activeCategoryId] || [];
+
   const itemMap = React.useMemo(() => {
     const map = new Map<string, MenuItem>();
     for (const item of currentCategoryItems) {
@@ -93,6 +99,40 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
 
             // 1. Column 1: Modifiers and Multipliers (Rows 1-6) & Empty on Row 7
             if (col === 1) {
+              if (isPaymentMode) {
+                // Payment Mode: Rows 1-4: X 1 - X 4, Row 5: QTY, Rows 6-7: Empty
+                if (row >= 1 && row <= 4) {
+                  const mult = row as 1 | 2 | 3 | 4;
+                  return (
+                    <PosButton
+                      key={cellKey}
+                      variant="modifier-red"
+                      onClick={() => setMultiplier(mult)}
+                      className="text-xs font-black tracking-wide"
+                    >
+                      {`X ${mult}`}
+                    </PosButton>
+                  );
+                }
+                if (row === 5) {
+                  return (
+                    <PosButton
+                      key={cellKey}
+                      variant="modifier-red"
+                      onClick={() => {
+                        if (selectedLineId) {
+                          openModal("qty");
+                        }
+                      }}
+                      className="text-xs font-black tracking-wide"
+                    >
+                      QTY
+                    </PosButton>
+                  );
+                }
+                return <PosButton key={cellKey} variant="empty" />;
+              }
+
               const modBtn = MODIFIER_BY_ROW.get(row);
               if (!modBtn) {
                 return <PosButton key={cellKey} variant="empty" />;
@@ -122,6 +162,23 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
 
             // 2. Column 7: Sizes and Sets (Rows 1-6) & Empty on Row 7
             if (col === 7) {
+              if (isPaymentMode) {
+                // Payment Mode: Rows 1-5: Empty, Row 6: Complete Payment, Row 7: Empty
+                if (row === 6) {
+                  return (
+                    <PosButton
+                      key={cellKey}
+                      variant="modifier-red"
+                      onClick={() => completePayment()}
+                      className="text-xs font-black tracking-tight"
+                    >
+                      Complete Payment
+                    </PosButton>
+                  );
+                }
+                return <PosButton key={cellKey} variant="empty" />;
+              }
+
               const sizeBtn = SIZE_BY_ROW.get(row);
               if (!sizeBtn) {
                 return <PosButton key={cellKey} variant="empty" />;

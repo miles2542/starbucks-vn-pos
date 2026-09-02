@@ -76,6 +76,10 @@ export const usePosStore = create<PosState>((set, get) => ({
   isModifierMode: false,
   activeModifierPage: null,
 
+  // Payment state
+  isPaymentMode: false,
+  activePaymentTab: "normal_payment",
+
   // Modal state
   activeModal: null,
 
@@ -296,6 +300,55 @@ export const usePosStore = create<PosState>((set, get) => ({
       orderItems: updatedOrderItems,
       selectedLineId: newModId,
       selectedOrderItemId: targetItem.id,
+    });
+  },
+
+  // Payment actions
+  enterPaymentMode: () => {
+    const { orderItems } = get();
+    if (orderItems.length === 0) return;
+    triggerRefresh(set, get, {
+      isPaymentMode: true,
+      activePaymentTab: "normal_payment",
+      breadcrumb: [{ label: "Normal Payment", id: "normal_payment" }],
+    });
+  },
+
+  exitPaymentMode: () => {
+    const { activeCategoryId } = get();
+    const category = CATEGORIES.find((c) => c.id === activeCategoryId);
+    const categoryName = category ? category.name : activeCategoryId;
+    triggerRefresh(set, get, {
+      isPaymentMode: false,
+      breadcrumb: [{ label: categoryName, id: activeCategoryId }],
+    });
+  },
+
+  setPaymentTab: (tab: "normal_payment" | "coupon" | "overseas_discount") => {
+    let label = "Normal Payment";
+    if (tab === "coupon") label = "COUPON";
+    else if (tab === "overseas_discount") label = "Overseas Discount";
+
+    triggerRefresh(set, get, {
+      activePaymentTab: tab,
+      breadcrumb: [{ label, id: tab }],
+    });
+  },
+
+  completePayment: () => {
+    const { orderSequence, activeCategoryId } = get();
+    const next = incrementOrderSequence(orderSequence);
+    const category = CATEGORIES.find((c) => c.id === activeCategoryId);
+    const categoryName = category ? category.name : activeCategoryId;
+
+    triggerRefresh(set, get, {
+      orderItems: [],
+      selectedOrderItemId: null,
+      selectedLineId: null,
+      orderSequence: next.orderSequence,
+      orderNumber: next.orderNumber,
+      isPaymentMode: false,
+      breadcrumb: [{ label: categoryName, id: activeCategoryId }],
     });
   },
 

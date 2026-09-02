@@ -12,10 +12,13 @@ import React from "react";
 export const FinalizeShell: React.FC = () => {
   const orderItems = usePosStore((state) => state.orderItems);
   const currentServeType = usePosStore((state) => state.currentServeType);
+  const isPaymentMode = usePosStore((state) => state.isPaymentMode);
   const clearOrder = usePosStore((state) => state.clearOrder);
   const voidSelectedLine = usePosStore((state) => state.voidSelectedLine);
   const reorderDrink = usePosStore((state) => state.reorderDrink);
   const openModal = usePosStore((state) => state.openModal);
+  const enterPaymentMode = usePosStore((state) => state.enterPaymentMode);
+  const exitPaymentMode = usePosStore((state) => state.exitPaymentMode);
 
   const totalAmount = React.useMemo(() => {
     return orderItems.reduce((sum, item) => {
@@ -31,6 +34,12 @@ export const FinalizeShell: React.FC = () => {
   const handleServeTypeItemClick = () => {
     if (currentServeType !== "Not Set") {
       openModal("serve_type_item");
+    }
+  };
+
+  const handleTotalAmountClick = () => {
+    if (orderItems.length > 0 && !isPaymentMode) {
+      enterPaymentMode();
     }
   };
 
@@ -77,77 +86,133 @@ export const FinalizeShell: React.FC = () => {
         </div>
 
         {/* Large Total Amount Display */}
-        <div
+        <button
+          type="button"
           data-testid="total-amount-display"
-          className="flex-1 bg-[#dbeafe] border border-[#93c5fd] rounded-[1px] flex items-center justify-end px-3 font-black text-2xl text-[#1e3a8a] shadow-inner"
+          onClick={handleTotalAmountClick}
+          className={`flex-1 bg-[#dbeafe] border border-[#93c5fd] rounded-[1px] flex items-center justify-end px-3 font-black text-2xl text-[#1e3a8a] shadow-inner ${
+            orderItems.length > 0 && !isPaymentMode ? "cursor-pointer active:brightness-95" : ""
+          }`}
         >
           {totalAmount.toLocaleString("en-US")}
-        </div>
+        </button>
       </div>
 
-      {/* Action Row 1 */}
-      <div className="grid grid-cols-4 gap-1 flex-1">
-        <PosButton
-          variant="tender-cyan"
-          className="text-xs font-black"
-          onClick={() => clearOrder()}
-        >
-          CLEAR ALL
-        </PosButton>
-        <PosButton
-          variant="tender-cyan"
-          className="text-xs font-black"
-          onClick={() => voidSelectedLine()}
-        >
-          Void
-        </PosButton>
-        <PosButton variant="default" className="text-xs font-black">
-          Barcode/ SKU
-        </PosButton>
-        <PosButton variant="default" className="text-xs font-black">
-          Hold Receipt
-        </PosButton>
-      </div>
+      {isPaymentMode ? (
+        <>
+          {/* Payment Mode Action Row 1: BACK (red), CLEAR ALL (red), DELETE (red), Balance Enquiry */}
+          <div className="grid grid-cols-4 gap-1 flex-1">
+            <PosButton
+              variant="modifier-red"
+              className="text-xs font-black"
+              onClick={() => exitPaymentMode()}
+            >
+              BACK
+            </PosButton>
+            <PosButton
+              variant="modifier-red"
+              className="text-xs font-black"
+              onClick={() => clearOrder()}
+            >
+              CLEAR ALL
+            </PosButton>
+            <PosButton
+              variant="modifier-red"
+              className="text-xs font-black"
+              onClick={() => voidSelectedLine()}
+            >
+              DELETE
+            </PosButton>
+            <PosButton variant="default" className="text-[11px] font-black">
+              Balance Enquiry
+            </PosButton>
+          </div>
 
-      {/* Action Row 2 */}
-      <div className="grid grid-cols-4 gap-1 flex-1">
-        <PosButton variant="default" className="text-xs font-black">
-          Recall Receipt
-        </PosButton>
-        <PosButton
-          variant="serve-yellow"
-          className="text-xs font-black"
-          onClick={() => openModal("serve_type_all")}
-        >
-          Serve type/All
-        </PosButton>
-        <PosButton
-          variant="serve-yellow"
-          className="text-xs font-black"
-          onClick={handleServeTypeItemClick}
-        >
-          Serve type/item
-        </PosButton>
-        <PosButton variant="serve-yellow" className="text-xs font-black">
-          E-Invoice
-        </PosButton>
-      </div>
+          {/* Payment Mode Action Row 2: Rewards Enquiry, Empty, Empty, Empty */}
+          <div className="grid grid-cols-4 gap-1 flex-1">
+            <PosButton variant="default" className="text-[11px] font-black">
+              Rewards Enquiry
+            </PosButton>
+            <PosButton variant="empty" />
+            <PosButton variant="empty" />
+            <PosButton variant="empty" />
+          </div>
 
-      {/* Action Row 3 */}
-      <div className="grid grid-cols-4 gap-1 flex-1">
-        <PosButton variant="default" className="text-[11px] font-black">
-          Balance Enquiry
-        </PosButton>
-        <PosButton variant="default" className="text-[11px] font-black">
-          Rewards Enquiry
-        </PosButton>
-        <PosButton variant="default" className="text-[11px] font-black">
-          TRANS. INQ.
-        </PosButton>
-        <PosButton variant="serve-yellow" className="p-0 flex items-center justify-center">
-          <NavArrowRightIcon className="w-8 h-8" />
-        </PosButton>
-      </div>
+          {/* Payment Mode Action Row 3: Empty, Empty, Empty, Empty */}
+          <div className="grid grid-cols-4 gap-1 flex-1">
+            <PosButton variant="empty" />
+            <PosButton variant="empty" />
+            <PosButton variant="empty" />
+            <PosButton variant="empty" />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Action Row 1 */}
+          <div className="grid grid-cols-4 gap-1 flex-1">
+            <PosButton
+              variant="tender-cyan"
+              className="text-xs font-black"
+              onClick={() => clearOrder()}
+            >
+              CLEAR ALL
+            </PosButton>
+            <PosButton
+              variant="tender-cyan"
+              className="text-xs font-black"
+              onClick={() => voidSelectedLine()}
+            >
+              Void
+            </PosButton>
+            <PosButton variant="default" className="text-xs font-black">
+              Barcode/ SKU
+            </PosButton>
+            <PosButton variant="default" className="text-xs font-black">
+              Hold Receipt
+            </PosButton>
+          </div>
+
+          {/* Action Row 2 */}
+          <div className="grid grid-cols-4 gap-1 flex-1">
+            <PosButton variant="default" className="text-xs font-black">
+              Recall Receipt
+            </PosButton>
+            <PosButton
+              variant="serve-yellow"
+              className="text-xs font-black"
+              onClick={() => openModal("serve_type_all")}
+            >
+              Serve type/All
+            </PosButton>
+            <PosButton
+              variant="serve-yellow"
+              className="text-xs font-black"
+              onClick={handleServeTypeItemClick}
+            >
+              Serve type/item
+            </PosButton>
+            <PosButton variant="serve-yellow" className="text-xs font-black">
+              E-Invoice
+            </PosButton>
+          </div>
+
+          {/* Action Row 3 */}
+          <div className="grid grid-cols-4 gap-1 flex-1">
+            <PosButton variant="default" className="text-[11px] font-black">
+              Balance Enquiry
+            </PosButton>
+            <PosButton variant="default" className="text-[11px] font-black">
+              Rewards Enquiry
+            </PosButton>
+            <PosButton variant="default" className="text-[11px] font-black">
+              TRANS. INQ.
+            </PosButton>
+            <PosButton variant="serve-yellow" className="p-0 flex items-center justify-center">
+              <NavArrowRightIcon className="w-8 h-8" />
+            </PosButton>
+          </div>
+        </>
+      )}
     </section>
   );
 };

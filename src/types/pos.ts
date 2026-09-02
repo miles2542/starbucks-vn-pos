@@ -8,6 +8,7 @@ export type ButtonVariant =
   | "modifier-red"
   | "tender-cyan"
   | "tender-grey"
+  | "tender-yellow"
   | "serve-yellow"
   | "nav-blue"
   | "empty";
@@ -94,6 +95,10 @@ export interface PosState {
   isModifierMode: boolean;
   activeModifierPage: string | null;
 
+  // Payment state
+  isPaymentMode: boolean;
+  activePaymentTab: "normal_payment" | "coupon" | "overseas_discount";
+
   // Modal state
   activeModal: ModalType;
 
@@ -125,6 +130,12 @@ export interface PosState {
   closeModifierMode: () => void;
   setModifierPage: (page: string, label?: string) => void;
   addModifier: (modifier: { id: string; name: string; price: number }) => void;
+
+  // Payment actions
+  enterPaymentMode: () => void;
+  exitPaymentMode: () => void;
+  setPaymentTab: (tab: "normal_payment" | "coupon" | "overseas_discount") => void;
+  completePayment: () => void;
 
   // Ticket 06 & 07 operations (void, change size, reorder, item serve type, modals)
   voidSelectedLine: () => void;

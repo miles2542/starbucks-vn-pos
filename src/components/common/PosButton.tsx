@@ -32,6 +32,7 @@ export const PosButton: React.FC<PosButtonProps> = ({
     "modifier-red": "pos-btn-red",
     "tender-cyan": "pos-btn-tender-cyan",
     "tender-grey": "pos-btn-tender-grey",
+    "tender-yellow": "pos-btn-yellow",
     "serve-yellow": "pos-btn-yellow",
     "nav-blue": "pos-btn-blue",
     empty: "pos-cell-empty",
