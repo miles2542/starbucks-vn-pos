@@ -95,11 +95,11 @@ export const ViewControls: React.FC = () => {
             />
           </div>
 
-          {/* 60ms Transition Toggle */}
+          {/* 100ms Transition Toggle */}
           <div className="flex items-center justify-between gap-3 pt-1 border-t border-neutral-800">
             <span className="flex items-center gap-1 text-neutral-300">
               <RefreshCw className="w-3 h-3 text-amber-400" />
-              <span>~60ms Cell Refresh</span>
+              <span>~100ms Cell Refresh</span>
             </span>
             <button
               type="button"

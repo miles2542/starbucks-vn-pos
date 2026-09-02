@@ -66,9 +66,9 @@ describe("Category Grid & Navigation", () => {
     expect(usePosStore.getState().activeCategoryId).toBe("food_hn_hy_bni");
     expect(screen.getByText("Food HN HY BNI", { selector: ".truncate" })).toBeInTheDocument();
 
-    // Fast-forward 60ms
+    // Fast-forward 100ms
     act(() => {
-      vi.advanceTimersByTime(60);
+      vi.advanceTimersByTime(100);
     });
 
     expect(usePosStore.getState().isRefreshing).toBe(false);

@@ -1,14 +1,15 @@
 import { CATEGORIES } from "@/constants/categories";
 import {
+  changeDrinkSizeInOrder,
+  reorderDrinkInList,
+  updateQuantityInOrder,
+  voidLineInOrder,
+} from "@/store/orderOperations";
+import {
   formatOrderNumber,
   getInitialOrderSequence,
   incrementOrderSequence,
 } from "@/store/orderSequence";
-import {
-  changeDrinkSizeInOrder,
-  reorderDrinkInList,
-  voidLineInOrder,
-} from "@/store/orderOperations";
 import type {
   BreadcrumbNode,
   MenuItem,
@@ -23,9 +24,32 @@ import type {
 } from "@/types/pos";
 import { create } from "zustand";
 
+const REFRESH_DURATION_MS = 100;
 let refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
 const initialSequence = getInitialOrderSequence();
+
+const triggerRefresh = (
+  set: (fn: (state: PosState) => Partial<PosState>) => void,
+  get: () => PosState,
+  partialState: Partial<PosState>,
+) => {
+  const { enableRefreshTransition } = get();
+  if (refreshTimer) {
+    clearTimeout(refreshTimer);
+    refreshTimer = null;
+  }
+  set(() => ({
+    ...partialState,
+    isRefreshing: enableRefreshTransition,
+  }));
+  if (enableRefreshTransition) {
+    refreshTimer = setTimeout(() => {
+      set(() => ({ isRefreshing: false }));
+      refreshTimer = null;
+    }, REFRESH_DURATION_MS);
+  }
+};
 
 export const usePosStore = create<PosState>((set, get) => ({
   // App Shell & Viewport
@@ -72,74 +96,49 @@ export const usePosStore = create<PosState>((set, get) => ({
   setActiveCategory: (categoryId: string) => {
     const category = CATEGORIES.find((c) => c.id === categoryId);
     const categoryName = category ? category.name : categoryId;
-    const newBreadcrumb: BreadcrumbNode[] = [{ label: categoryName, id: categoryId }];
-
-    const { enableRefreshTransition } = get();
-
-    if (refreshTimer) {
-      clearTimeout(refreshTimer);
-      refreshTimer = null;
-    }
-
-    set({
-      isRefreshing: enableRefreshTransition,
+    triggerRefresh(set, get, {
       activeCategoryId: categoryId,
       activeSubcategoryId: null,
       isModifierMode: false,
       activeModifierPage: null,
-      breadcrumb: newBreadcrumb,
+      breadcrumb: [{ label: categoryName, id: categoryId }],
       activeSize: "T", // Reset size to Tall default on category change
     });
-
-    if (enableRefreshTransition) {
-      refreshTimer = setTimeout(() => {
-        set({ isRefreshing: false });
-        refreshTimer = null;
-      }, 60);
-    }
   },
 
   setActiveSubcategory: (subcategoryId: string | null, label?: string) => {
-    const { activeCategoryId, breadcrumb, enableRefreshTransition } = get();
-
-    if (refreshTimer) {
-      clearTimeout(refreshTimer);
-      refreshTimer = null;
-    }
+    const { activeCategoryId, breadcrumb } = get();
 
     if (!subcategoryId) {
       const root = breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId };
-      set({
+      triggerRefresh(set, get, {
         activeSubcategoryId: null,
         isModifierMode: false,
         activeModifierPage: null,
         breadcrumb: [root],
-        isRefreshing: enableRefreshTransition,
       });
     } else {
       const subBreadcrumb: BreadcrumbNode[] = [
         breadcrumb[0] || { label: activeCategoryId, id: activeCategoryId },
         { label: label || subcategoryId, id: subcategoryId },
       ];
-      set({
+      triggerRefresh(set, get, {
         activeSubcategoryId: subcategoryId,
         isModifierMode: false,
         activeModifierPage: null,
         breadcrumb: subBreadcrumb,
-        isRefreshing: enableRefreshTransition,
       });
-    }
-
-    if (enableRefreshTransition) {
-      refreshTimer = setTimeout(() => {
-        set({ isRefreshing: false });
-        refreshTimer = null;
-      }, 60);
     }
   },
 
-  setActiveSize: (size: SizeCode) => set({ activeSize: size }),
-  setMultiplier: (multiplier: Multiplier) => set({ multiplier }),
+  setActiveSize: (size: SizeCode) => {
+    triggerRefresh(set, get, { activeSize: size });
+  },
+
+  setMultiplier: (multiplier: Multiplier) => {
+    triggerRefresh(set, get, { multiplier });
+  },
+
   setServeType: (serveType: ServeType) => set({ currentServeType: serveType }),
 
   addOrderItem: (item: MenuItem, size?: SizeCode, quantity?: number) => {
@@ -227,7 +226,7 @@ export const usePosStore = create<PosState>((set, get) => ({
       ? [{ label: activeItem.name, id: activeItem.id }]
       : [breadcrumb[0] || { label: "HOT ESP", id: "hot_esp" }];
 
-    set({
+    triggerRefresh(set, get, {
       isModifierMode: true,
       activeModifierPage: page,
       breadcrumb: [...baseBreadcrumb, { label: "Modifier", id: "modifier_root" }],
@@ -238,7 +237,7 @@ export const usePosStore = create<PosState>((set, get) => ({
     const { activeCategoryId } = get();
     const category = CATEGORIES.find((c) => c.id === activeCategoryId);
     const categoryName = category ? category.name : activeCategoryId;
-    set({
+    triggerRefresh(set, get, {
       isModifierMode: false,
       activeModifierPage: null,
       breadcrumb: [{ label: categoryName, id: activeCategoryId }],
@@ -255,7 +254,7 @@ export const usePosStore = create<PosState>((set, get) => ({
       else pageLabel = page.charAt(0).toUpperCase() + page.slice(1);
     }
 
-    set({
+    triggerRefresh(set, get, {
       activeModifierPage: page,
       breadcrumb:
         page === "root"
@@ -348,6 +347,12 @@ export const usePosStore = create<PosState>((set, get) => ({
       item.id === itemId ? { ...item, serveType } : item,
     );
     set({ orderItems: updatedOrderItems });
+  },
+
+  updateItemQuantity: (lineId: string, quantity: number) => {
+    const { orderItems } = get();
+    const updated = updateQuantityInOrder(orderItems, lineId, quantity);
+    set({ orderItems: updated });
   },
 
   openModal: (modal: ModalType) => set({ activeModal: modal }),

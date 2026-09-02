@@ -177,3 +177,46 @@ export const changeDrinkSizeInOrder = (
 
   return updatedOrderItems;
 };
+
+/**
+ * Updates the quantity of a selected parent drink or modifier.
+ * Recalculates totalPrice accordingly.
+ */
+export const updateQuantityInOrder = (
+  orderItems: OrderItem[],
+  selectedLineId: string | null,
+  quantity: number,
+): OrderItem[] => {
+  if (orderItems.length === 0 || !selectedLineId || quantity < 1) {
+    return orderItems;
+  }
+
+  // 1. Check if modifier
+  for (let i = 0; i < orderItems.length; i++) {
+    const modIdx = orderItems[i].modifiers.findIndex((m) => m.id === selectedLineId);
+    if (modIdx !== -1) {
+      const parent = orderItems[i];
+      const updatedMods = parent.modifiers.map((m, idx) =>
+        idx === modIdx ? { ...m, quantity } : m,
+      );
+      const updated = [...orderItems];
+      updated[i] = { ...parent, modifiers: updatedMods };
+      return updated;
+    }
+  }
+
+  // 2. Check if parent drink
+  const itemIndex = orderItems.findIndex((item) => item.id === selectedLineId);
+  if (itemIndex !== -1) {
+    const item = orderItems[itemIndex];
+    const updated = [...orderItems];
+    updated[itemIndex] = {
+      ...item,
+      quantity,
+      totalPrice: item.unitPrice * quantity,
+    };
+    return updated;
+  }
+
+  return orderItems;
+};

@@ -34,7 +34,10 @@ export const OrderDisplayShell: React.FC = () => {
   const totalAmount = React.useMemo(() => {
     return orderItems.reduce((sum, item) => {
       const itemBaseTotal = item.unitPrice * item.quantity;
-      const modifiersTotal = (item.modifiers || []).reduce((mSum, mod) => mSum + mod.price, 0);
+      const modifiersTotal = (item.modifiers || []).reduce(
+        (mSum, mod) => mSum + mod.price * (mod.quantity ?? 1),
+        0,
+      );
       return sum + itemBaseTotal + modifiersTotal;
     }, 0);
   }, [orderItems]);
@@ -129,12 +132,14 @@ export const OrderDisplayShell: React.FC = () => {
                         &gt; {mod.name}
                       </span>
 
-                      {/* Blank quantity */}
-                      <span className="w-8 text-center shrink-0" />
+                      {/* Quantity */}
+                      <span className="w-8 text-center shrink-0">
+                        {mod.quantity !== undefined && mod.quantity > 1 ? mod.quantity : ""}
+                      </span>
 
                       {/* Modifier Price */}
                       <span className="w-20 text-right shrink-0 text-[#334155]">
-                        {mod.price.toLocaleString("en-US")}
+                        {(mod.price * (mod.quantity ?? 1)).toLocaleString("en-US")}
                       </span>
                     </div>
                   );

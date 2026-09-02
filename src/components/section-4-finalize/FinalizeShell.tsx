@@ -14,7 +14,10 @@ export const FinalizeShell: React.FC = () => {
   const totalAmount = React.useMemo(() => {
     return orderItems.reduce((sum, item) => {
       const itemBase = item.unitPrice * item.quantity;
-      const modTotal = (item.modifiers || []).reduce((mSum, m) => mSum + m.price, 0);
+      const modTotal = (item.modifiers || []).reduce(
+        (mSum, m) => mSum + m.price * (m.quantity ?? 1),
+        0,
+      );
       return sum + itemBase + modTotal;
     }, 0);
   }, [orderItems]);

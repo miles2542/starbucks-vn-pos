@@ -49,6 +49,7 @@ export interface OrderModifier {
   modifierId: string;
   name: string;
   price: number;
+  quantity?: number;
 }
 
 export interface OrderItem {
@@ -66,7 +67,7 @@ export interface OrderItem {
 export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BTS";
 export type Multiplier = 1 | 2 | 3 | 4;
 export type SizeCode = "S" | "T" | "G" | "V";
-export type ModalType = "serve_type_all" | "serve_type_item" | "change_size" | null;
+export type ModalType = "serve_type_all" | "serve_type_item" | "change_size" | "qty" | null;
 
 export interface PosState {
   // App Shell & Viewport
@@ -131,6 +132,7 @@ export interface PosState {
   moveSelectedLine: (direction: "up" | "down" | "top" | "bottom") => void;
   reorderDrink: (direction: "up" | "down" | "top" | "bottom") => void;
   setItemServeType: (itemId: string, serveType: ServeType) => void;
+  updateItemQuantity: (lineId: string, quantity: number) => void;
   openModal: (modal: ModalType) => void;
   closeModal: () => void;
 }

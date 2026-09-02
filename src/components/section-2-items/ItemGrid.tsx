@@ -26,6 +26,7 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
   const isRefreshing = usePosStore((state) => state.isRefreshing);
   const isModifierMode = usePosStore((state) => state.isModifierMode);
   const activeModifierPage = usePosStore((state) => state.activeModifierPage);
+  const selectedLineId = usePosStore((state) => state.selectedLineId);
 
   const setMultiplier = usePosStore((state) => state.setMultiplier);
   const setActiveSize = usePosStore((state) => state.setActiveSize);
@@ -34,6 +35,7 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
   const openModifierMode = usePosStore((state) => state.openModifierMode);
   const setModifierPage = usePosStore((state) => state.setModifierPage);
   const addModifier = usePosStore((state) => state.addModifier);
+  const openModal = usePosStore((state) => state.openModal);
 
   // If subcategory is active, load items for that subcategory key, else active category
   const lookupKey = activeSubcategoryId || activeCategoryId;
@@ -110,6 +112,10 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
                       openModifierMode("root");
                     } else if (modBtn.multiplier !== undefined) {
                       setMultiplier(modBtn.multiplier as 1 | 2 | 3 | 4);
+                    } else if (modBtn.id === "qty_btn") {
+                      if (selectedLineId) {
+                        openModal("qty");
+                      }
                     }
                   }}
                   className="text-xs font-black tracking-wide"
