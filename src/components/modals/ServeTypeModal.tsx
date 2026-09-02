@@ -1,4 +1,3 @@
-import { PosButton } from "@/components/common/PosButton";
 import { usePosStore } from "@/store/usePosStore";
 import type { ServeType } from "@/types/pos";
 import clsx from "clsx";
@@ -61,32 +60,37 @@ export const ServeTypeModal: React.FC<ServeTypeModalProps> = ({ mode, isOpen, on
   return (
     <div
       data-testid="modal-serve-type"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[1px] select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-[0.5px] select-none"
     >
-      <div className="w-[420px] bg-[#dbe4ee] border-2 border-[#334155] rounded-sm shadow-2xl overflow-hidden flex flex-col font-sans">
-        {/* Modal Header */}
-        <div className="bg-[#24334a] text-white px-3 py-2 flex items-center justify-between">
-          <span className="font-black text-sm tracking-wide">
+      <div className="w-[360px] bg-white border-2 border-[#1e293b] rounded-none shadow-2xl overflow-hidden flex flex-col font-sans">
+        {/* Subtle Window Header */}
+        <div className="bg-[#334155] text-white px-3 py-1.5 flex items-center justify-between border-b border-[#1e293b]">
+          <span className="font-bold text-xs uppercase tracking-wider text-slate-100">
             {mode === "all" ? "Serve type / All" : "Serve type / Item"}
           </span>
           <button
             type="button"
             onClick={onClose}
             className="text-slate-300 hover:text-white p-0.5 rounded"
+            aria-label="Close dialog"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Modal Body */}
-        <div className="p-4 bg-[#e2e8f0] flex flex-col gap-3">
-          <p className="text-xs font-bold text-slate-700">
+        {/* Modal Body: White background, sharp black text, single-column list */}
+        <div className="p-3 bg-white flex flex-col gap-2">
+          <p className="text-xs font-semibold text-neutral-800">
             {mode === "all"
               ? "Select global serve type for the order:"
               : `Select serve type for item: ${targetItem?.name || "Selected Item"}`}
           </p>
 
-          <div className="grid grid-cols-2 gap-2">
+          {/* Clean Single-Column List with Classic Blue Rectangular Highlight */}
+          <div
+            className="flex flex-col border border-slate-300 bg-white"
+            data-testid="serve-type-options-list"
+          >
             {SERVE_OPTIONS.map((option) => {
               const isSelected = selectedOption === option;
 
@@ -97,35 +101,36 @@ export const ServeTypeModal: React.FC<ServeTypeModalProps> = ({ mode, isOpen, on
                   data-testid={`serve-option-${option.toLowerCase().replace(/\s+/g, "-")}`}
                   onClick={() => setSelectedOption(option)}
                   className={clsx(
-                    "h-14 font-black text-sm border-2 rounded-sm transition-all flex items-center justify-center shadow-sm",
+                    "h-10 px-3 text-left font-bold text-sm transition-none flex items-center justify-between select-none border-b border-slate-200 last:border-b-0",
                     isSelected
-                      ? "bg-[#a2c374] text-slate-950 border-[#4d7c0f] ring-2 ring-[#4d7c0f]/50"
-                      : "bg-[#cbd5e1] text-slate-800 border-[#94a3b8] hover:bg-[#d8e2ed]",
+                      ? "bg-[#1d4ed8] text-white"
+                      : "bg-white text-neutral-900 hover:bg-slate-100",
                   )}
                 >
-                  {option}
+                  <span>{option}</span>
+                  {isSelected && <span aria-hidden="true" className="text-xs font-black">●</span>}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Modal Footer */}
-        <div className="bg-[#cbd5e1] px-4 py-3 flex items-center justify-end gap-2 border-t border-[#94a3b8]">
-          <PosButton
-            variant="default"
-            className="w-24 h-10 font-black text-xs"
+        {/* Modal Footer: Classic 3D Beveled Buttons */}
+        <div className="bg-[#f1f5f9] px-3 py-2 flex items-center justify-end gap-2 border-t border-slate-300">
+          <button
+            type="button"
+            className="w-24 h-9 font-bold text-xs bg-[#e2e8f0] text-slate-900 border-t-2 border-l-2 border-white border-b-2 border-r-2 border-slate-600 active:border-t-slate-600 active:border-l-slate-600 active:border-b-white active:border-r-white shadow-sm flex items-center justify-center cursor-pointer"
             onClick={onClose}
           >
             Cancel
-          </PosButton>
-          <PosButton
-            variant="category-green"
-            className="w-24 h-10 font-black text-xs"
+          </button>
+          <button
+            type="button"
+            className="w-24 h-9 font-bold text-xs bg-[#e2e8f0] text-slate-900 border-t-2 border-l-2 border-white border-b-2 border-r-2 border-slate-600 active:border-t-slate-600 active:border-l-slate-600 active:border-b-white active:border-r-white shadow-sm flex items-center justify-center cursor-pointer"
             onClick={handleConfirm}
           >
             OK
-          </PosButton>
+          </button>
         </div>
       </div>
     </div>

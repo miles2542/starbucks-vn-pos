@@ -44,7 +44,6 @@ export const PosButton: React.FC<PosButtonProps> = ({
       className={clsx(
         "pos-btn-base relative w-full h-full text-xs font-bold uppercase tracking-tight select-none overflow-hidden",
         variantClass,
-        isActive && "pos-btn-category-active ring-1 ring-sky-500",
         disabled && "opacity-50 cursor-not-allowed",
         className,
       )}

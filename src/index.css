@@ -37,11 +37,6 @@
   box-shadow: inset 1px 1px 0px #ffffff, inset -1px -1px 0px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.pos-btn-category-active {
-  border: 2px solid #0284c7 !important;
-  background: linear-gradient(180deg, #ffffff 0%, #e0f2fe 50%, #bae6fd 100%) !important;
-}
-
 /* Green category (SBUX CARD) */
 .pos-btn-green {
   background: linear-gradient(180deg, #9ae66e 0%, #76d346 50%, #58bf24 100%);

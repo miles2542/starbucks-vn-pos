@@ -1,4 +1,3 @@
-import { PosButton } from "@/components/common/PosButton";
 import { usePosStore } from "@/store/usePosStore";
 import { X } from "lucide-react";
 import React, { useState, useEffect, useMemo } from "react";
@@ -39,8 +38,8 @@ export const QtyModal: React.FC<QtyModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen || !target) return null;
 
   const handleDigitClick = (digit: string) => {
-    if (buffer.length >= 3) return; // Cap at 3 digits (up to 999)
-    if (buffer === "" && digit === "0") return; // Avoid leading zeros
+    if (buffer.length >= 3) return; // Cap at 3 digits
+    if (buffer === "" && digit === "0") return; // Avoid leading zero
     setBuffer((prev) => prev + digit);
   };
 
@@ -56,7 +55,7 @@ export const QtyModal: React.FC<QtyModalProps> = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  const keypadKeys: Array<{ label: string; action: () => void; testId: string; variant?: "default" | "nav-blue" | "tender-cyan" }> = [
+  const keypadKeys = [
     { label: "7", action: () => handleDigitClick("7"), testId: "keypad-btn-7" },
     { label: "8", action: () => handleDigitClick("8"), testId: "keypad-btn-8" },
     { label: "9", action: () => handleDigitClick("9"), testId: "keypad-btn-9" },
@@ -66,91 +65,99 @@ export const QtyModal: React.FC<QtyModalProps> = ({ isOpen, onClose }) => {
     { label: "1", action: () => handleDigitClick("1"), testId: "keypad-btn-1" },
     { label: "2", action: () => handleDigitClick("2"), testId: "keypad-btn-2" },
     { label: "3", action: () => handleDigitClick("3"), testId: "keypad-btn-3" },
-    { label: "Clear", action: handleClear, testId: "keypad-btn-clear", variant: "tender-cyan" },
+    { label: "Clear", action: handleClear, testId: "keypad-btn-clear", isSpecial: true },
     { label: "0", action: () => handleDigitClick("0"), testId: "keypad-btn-0" },
-    { label: "Enter", action: handleConfirm, testId: "keypad-btn-enter", variant: "nav-blue" },
+    { label: "Enter", action: handleConfirm, testId: "keypad-btn-enter", isEnter: true },
   ];
 
   return (
     <div
       data-testid="modal-qty"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-[1px] select-none"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-[0.5px] select-none"
     >
-      <div className="w-[380px] bg-[#dbe4ee] border-2 border-[#334155] rounded-sm shadow-2xl overflow-hidden flex flex-col font-sans">
-        {/* Header */}
-        <div className="bg-[#24334a] text-white px-3 py-2 flex items-center justify-between">
-          <span className="font-black text-sm tracking-wide">Enter Quantity</span>
+      <div className="w-[360px] bg-white border-2 border-[#1e293b] rounded-none shadow-2xl overflow-hidden flex flex-col font-sans">
+        {/* Subtle Window Header */}
+        <div className="bg-[#334155] text-white px-3 py-1.5 flex items-center justify-between border-b border-[#1e293b]">
+          <span className="font-bold text-xs uppercase tracking-wider text-slate-100">
+            Enter Quantity
+          </span>
           <button
             type="button"
             onClick={onClose}
             className="text-slate-300 hover:text-white p-0.5 rounded"
-            aria-label="Close quantity dialog"
+            aria-label="Close dialog"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Body */}
-        <div className="p-4 bg-[#e2e8f0] flex flex-col gap-3">
-          {/* Item details */}
-          <div className="bg-white/80 border border-slate-300 p-2.5 rounded-sm flex flex-col gap-1">
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-bold text-slate-600">Item:</span>
-              <span data-testid="qty-target-name" className="font-black text-slate-900 truncate max-w-[220px]">
+        {/* Modal Body */}
+        <div className="p-3 bg-white flex flex-col gap-2.5">
+          {/* Target Info */}
+          <div className="bg-[#f8fafc] border border-slate-300 p-2 text-xs flex flex-col gap-1">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-600 font-semibold">Target Item:</span>
+              <span data-testid="qty-target-name" className="font-bold text-slate-900 truncate max-w-[210px]">
                 {target.name}
               </span>
             </div>
-            <div className="flex justify-between items-center text-xs">
-              <span className="font-bold text-slate-600">Current Qty:</span>
-              <span data-testid="qty-current-value" className="font-black text-slate-700">
+            <div className="flex justify-between items-center">
+              <span className="text-slate-600 font-semibold">Current Qty:</span>
+              <span data-testid="qty-current-value" className="font-bold text-slate-800">
                 {target.quantity}
               </span>
             </div>
           </div>
 
           {/* New Quantity Display */}
-          <div className="bg-white border-2 border-[#1e3a8a] rounded-sm p-2 flex items-center justify-between shadow-inner">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">New Qty:</span>
+          <div className="bg-white border-2 border-[#1d4ed8] p-1.5 flex items-center justify-between shadow-inner">
+            <span className="text-xs font-bold text-slate-600 uppercase">New Qty:</span>
             <span
               data-testid="qty-buffer-display"
-              className="text-2xl font-black text-slate-950 font-mono tracking-wider"
+              className="text-2xl font-black text-slate-950 font-mono"
             >
               {buffer || "0"}
             </span>
           </div>
 
           {/* 3x4 Touchscreen Numeric Keypad */}
-          <div className="grid grid-cols-3 gap-1.5 h-[220px]" data-testid="qty-keypad-grid">
+          <div className="grid grid-cols-3 gap-1 h-[210px]" data-testid="qty-keypad-grid">
             {keypadKeys.map((k) => (
-              <PosButton
+              <button
                 key={k.label}
-                variant={k.variant || "default"}
+                type="button"
                 data-testid={k.testId}
                 onClick={k.action}
-                className="text-base font-black"
+                className={`font-bold text-base border-t-2 border-l-2 border-white border-b-2 border-r-2 border-slate-500 active:border-t-slate-500 active:border-l-slate-500 active:border-b-white active:border-r-white shadow-sm flex items-center justify-center cursor-pointer select-none ${
+                  k.isEnter
+                    ? "bg-[#1d4ed8] text-white"
+                    : k.isSpecial
+                      ? "bg-[#fed7aa] text-amber-950"
+                      : "bg-[#e2e8f0] text-slate-900 hover:bg-[#cbd5e1]"
+                }`}
               >
                 {k.label}
-              </PosButton>
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="bg-[#cbd5e1] px-4 py-2.5 flex items-center justify-end gap-2 border-t border-[#94a3b8]">
-          <PosButton
-            variant="default"
-            className="w-24 h-10 font-black text-xs"
+        {/* Modal Footer: Classic 3D Beveled Buttons */}
+        <div className="bg-[#f1f5f9] px-3 py-2 flex items-center justify-end gap-2 border-t border-slate-300">
+          <button
+            type="button"
+            className="w-24 h-9 font-bold text-xs bg-[#e2e8f0] text-slate-900 border-t-2 border-l-2 border-white border-b-2 border-r-2 border-slate-600 active:border-t-slate-600 active:border-l-slate-600 active:border-b-white active:border-r-white shadow-sm flex items-center justify-center cursor-pointer"
             onClick={onClose}
           >
             Cancel
-          </PosButton>
-          <PosButton
-            variant="category-green"
-            className="w-24 h-10 font-black text-xs"
+          </button>
+          <button
+            type="button"
+            className="w-24 h-9 font-bold text-xs bg-[#e2e8f0] text-slate-900 border-t-2 border-l-2 border-white border-b-2 border-r-2 border-slate-600 active:border-t-slate-600 active:border-l-slate-600 active:border-b-white active:border-r-white shadow-sm flex items-center justify-center cursor-pointer"
             onClick={handleConfirm}
           >
             OK
-          </PosButton>
+          </button>
         </div>
       </div>
     </div>

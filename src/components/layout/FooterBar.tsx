@@ -1,5 +1,5 @@
+import { CashierUserIcon } from "@/components/common/PosIcons";
 import { usePosStore } from "@/store/usePosStore";
-import { User } from "lucide-react";
 import React from "react";
 
 export const FooterBar: React.FC = () => {
@@ -23,7 +23,7 @@ export const FooterBar: React.FC = () => {
         <span className="text-slate-400">|</span>
         <span className="font-semibold text-neutral-700">Business Date{businessDate}</span>
         <div className="flex items-center gap-1.5 font-bold text-neutral-800 bg-[#cbd5e1]/50 px-2 py-0.5 rounded">
-          <User className="w-3.5 h-3.5 text-teal-700" />
+          <CashierUserIcon className="w-3.5 h-3.5 text-teal-700" />
           <span>{cashierName}</span>
         </div>
       </div>

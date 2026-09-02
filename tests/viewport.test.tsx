@@ -38,6 +38,9 @@ describe("Viewport Container & View Controls", () => {
 
     expect(screen.getByTestId("view-controls")).toBeInTheDocument();
 
+    // Expand minimized pill controls
+    fireEvent.click(screen.getByTestId("view-controls-toggle"));
+
     // Click 100%
     fireEvent.click(screen.getByRole("button", { name: "100%" }));
     expect(usePosStore.getState().zoomMode).toBe("100%");
@@ -55,8 +58,11 @@ describe("Viewport Container & View Controls", () => {
     expect(usePosStore.getState().zoomMode).toBe("fit");
   });
 
-  it("toggles the 60ms refresh transition switch", () => {
+  it("toggles the 100ms refresh transition switch", () => {
     render(<ViewControls />);
+
+    // Expand minimized pill controls
+    fireEvent.click(screen.getByTestId("view-controls-toggle"));
 
     const switchBtn = screen.getByRole("switch");
     expect(switchBtn).toHaveAttribute("aria-checked", "true");

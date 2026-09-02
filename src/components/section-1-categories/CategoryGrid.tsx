@@ -7,7 +7,6 @@ const TOTAL_ROWS = 3;
 const TOTAL_COLS = 7;
 
 export const CategoryGrid: React.FC = () => {
-  const activeCategoryId = usePosStore((state) => state.activeCategoryId);
   const setActiveCategory = usePosStore((state) => state.setActiveCategory);
 
   // Construct 7x3 grid matrix (1-indexed rows 1-3 and cols 1-7)
@@ -32,14 +31,12 @@ export const CategoryGrid: React.FC = () => {
               return <PosButton key={key} variant="empty" />;
             }
 
-            const isActive = activeCategoryId === category.id;
             const variant = category.variant || "category";
 
             return (
               <PosButton
                 key={key}
                 variant={variant}
-                isActive={isActive}
                 onClick={() => setActiveCategory(category.id)}
                 className="text-[13px] tracking-tight leading-tight px-1 font-bold"
               >

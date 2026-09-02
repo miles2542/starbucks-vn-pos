@@ -98,15 +98,10 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
                 return <PosButton key={cellKey} variant="empty" />;
               }
 
-              const isModifierActive = modBtn.id === "modifier_btn" && isModifierMode;
-              const isMultiplierActive =
-                modBtn.multiplier !== undefined && multiplier === modBtn.multiplier;
-
               return (
                 <PosButton
                   key={cellKey}
                   variant="modifier-red"
-                  isActive={isModifierActive || isMultiplierActive}
                   onClick={() => {
                     if (modBtn.id === "modifier_btn") {
                       openModifierMode("root");
@@ -132,13 +127,10 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
                 return <PosButton key={cellKey} variant="empty" />;
               }
 
-              const isSizeActive = sizeBtn.size !== undefined && activeSize === sizeBtn.size;
-
               return (
                 <PosButton
                   key={cellKey}
                   variant="modifier-red"
-                  isActive={isSizeActive}
                   onClick={() => {
                     if (sizeBtn.size) {
                       setActiveSize(sizeBtn.size);

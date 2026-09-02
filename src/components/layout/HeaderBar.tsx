@@ -1,5 +1,9 @@
+import {
+  RegisterDrawerIcon,
+  StoreHouseIcon,
+  WifiSignalIcon,
+} from "@/components/common/PosIcons";
 import { usePosStore } from "@/store/usePosStore";
-import { Calendar, Monitor, Store } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 export const HeaderBar: React.FC = () => {
@@ -32,19 +36,19 @@ export const HeaderBar: React.FC = () => {
     >
       {/* Left: Terminal Info */}
       <div className="flex items-center gap-1.5">
-        <Store className="w-4 h-4 text-[#ea580c]" />
+        <StoreHouseIcon className="w-4 h-4 text-[#ea580c]" />
         <span className="tracking-tight text-neutral-800 font-bold">{terminalId}</span>
       </div>
 
-      {/* Center: Live Date & Time */}
+      {/* Center: Live Date & Time + Wi-Fi */}
       <div className="flex items-center gap-1.5 font-medium text-neutral-700">
-        <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+        <WifiSignalIcon className="w-4 h-4" />
         <span data-testid="live-timestamp">{currentTime || "2026/08/29 12:00:00"}</span>
       </div>
 
       {/* Right: Register Number */}
       <div className="flex items-center gap-1.5">
-        <Monitor className="w-4 h-4 text-blue-600" />
+        <RegisterDrawerIcon className="w-4 h-4 text-blue-600" />
         <span className="font-bold text-neutral-800 tracking-wider">{registerNumber}</span>
       </div>
     </header>

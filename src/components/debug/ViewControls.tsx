@@ -1,10 +1,10 @@
 import { usePosStore } from "@/store/usePosStore";
 import type { ZoomMode } from "@/types/pos";
-import { ChevronDown, ChevronUp, Eye, RefreshCw, Sliders, ZoomIn } from "lucide-react";
+import { ChevronDown, Eye, RefreshCw, Sliders, ZoomIn } from "lucide-react";
 import React, { useState } from "react";
 
 export const ViewControls: React.FC = () => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true);
   const zoomMode = usePosStore((state) => state.zoomMode);
   const scale = usePosStore((state) => state.scale);
   const enableRefreshTransition = usePosStore((state) => state.enableRefreshTransition);
@@ -26,10 +26,30 @@ export const ViewControls: React.FC = () => {
     setScale(val);
   };
 
+  // Minimized state: small rounded pill with only eye icon, 25% resting opacity, 100% on hover
+  if (isCollapsed) {
+    return (
+      <div
+        data-testid="view-controls"
+        className="fixed bottom-3 right-3 z-50 opacity-25 hover:opacity-100 transition-opacity duration-200 select-none"
+      >
+        <button
+          type="button"
+          data-testid="view-controls-toggle"
+          aria-label="Expand viewport controls"
+          onClick={() => setIsCollapsed(false)}
+          className="p-2 bg-neutral-900/90 text-sky-400 border border-neutral-700 rounded-full shadow-xl flex items-center justify-center cursor-pointer hover:bg-neutral-800"
+        >
+          <Eye className="w-4 h-4" />
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div
       data-testid="view-controls"
-      className="fixed bottom-4 right-4 z-50 bg-neutral-900/90 backdrop-blur border border-neutral-700 text-neutral-100 rounded-lg shadow-2xl p-2.5 transition-all text-xs select-none w-72"
+      className="fixed bottom-3 right-3 z-50 bg-neutral-900/95 backdrop-blur border border-neutral-700 text-neutral-100 rounded-lg shadow-2xl p-2.5 transition-all text-xs select-none w-72"
     >
       {/* Header bar of floating controls */}
       <div className="flex items-center justify-between gap-3 pb-1 border-b border-neutral-700/60 font-semibold">
@@ -39,86 +59,85 @@ export const ViewControls: React.FC = () => {
         </div>
         <button
           type="button"
-          aria-label={isCollapsed ? "Expand debug controls" : "Collapse debug controls"}
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          data-testid="view-controls-toggle"
+          aria-label="Collapse viewport controls"
+          onClick={() => setIsCollapsed(true)}
           className="p-1 rounded hover:bg-neutral-800 text-neutral-400 hover:text-neutral-200"
         >
-          {isCollapsed ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+          <ChevronDown className="w-3.5 h-3.5" />
         </button>
       </div>
 
-      {!isCollapsed && (
-        <div className="mt-2 flex flex-col gap-2.5">
-          {/* Zoom Modes */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5 text-neutral-400">
-              <span className="flex items-center gap-1">
-                <ZoomIn className="w-3 h-3" /> Zoom Preset:
-              </span>
-              <span className="font-mono text-sky-400 font-bold">{Math.round(scale * 100)}%</span>
-            </div>
-            <div className="grid grid-cols-4 gap-1">
-              {zoomOptions.map((opt) => (
-                <button
-                  key={opt.mode}
-                  type="button"
-                  onClick={() => setZoomMode(opt.mode)}
-                  className={`px-2 py-1 rounded text-center font-bold text-xs transition-colors ${
-                    zoomMode === opt.mode
-                      ? "bg-sky-600 text-white shadow"
-                      : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Continuous Manual Scale Slider */}
-          <div className="pt-1 border-t border-neutral-800">
-            <div className="flex items-center justify-between mb-1 text-neutral-400">
-              <span className="flex items-center gap-1">
-                <Sliders className="w-3 h-3 text-sky-400" /> Scale Slider:
-              </span>
-              <span className="font-mono text-neutral-300">{Math.round(scale * 100)}%</span>
-            </div>
-            <input
-              type="range"
-              min="0.25"
-              max="1.5"
-              step="0.05"
-              value={scale}
-              onChange={handleSliderChange}
-              data-testid="zoom-scale-slider"
-              className="w-full accent-sky-500 cursor-pointer h-1.5 bg-neutral-700 rounded-lg appearance-none"
-            />
-          </div>
-
-          {/* 100ms Transition Toggle */}
-          <div className="flex items-center justify-between gap-3 pt-1 border-t border-neutral-800">
-            <span className="flex items-center gap-1 text-neutral-300">
-              <RefreshCw className="w-3 h-3 text-amber-400" />
-              <span>~100ms Cell Refresh</span>
+      <div className="mt-2 flex flex-col gap-2.5">
+        {/* Zoom Modes */}
+        <div>
+          <div className="flex items-center justify-between mb-1.5 text-neutral-400">
+            <span className="flex items-center gap-1">
+              <ZoomIn className="w-3 h-3" /> Zoom Preset:
             </span>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={enableRefreshTransition}
-              onClick={() => setEnableRefreshTransition(!enableRefreshTransition)}
-              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                enableRefreshTransition ? "bg-emerald-600" : "bg-neutral-700"
-              }`}
-            >
-              <span
-                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                  enableRefreshTransition ? "translate-x-4" : "translate-x-0"
+            <span className="font-mono text-sky-400 font-bold">{Math.round(scale * 100)}%</span>
+          </div>
+          <div className="grid grid-cols-4 gap-1">
+            {zoomOptions.map((opt) => (
+              <button
+                key={opt.mode}
+                type="button"
+                onClick={() => setZoomMode(opt.mode)}
+                className={`px-2 py-1 rounded text-center font-bold text-xs transition-colors ${
+                  zoomMode === opt.mode
+                    ? "bg-sky-600 text-white shadow"
+                    : "bg-neutral-800 text-neutral-300 hover:bg-neutral-700"
                 }`}
-              />
-            </button>
+              >
+                {opt.label}
+              </button>
+            ))}
           </div>
         </div>
-      )}
+
+        {/* Continuous Manual Scale Slider */}
+        <div className="pt-1 border-t border-neutral-800">
+          <div className="flex items-center justify-between mb-1 text-neutral-400">
+            <span className="flex items-center gap-1">
+              <Sliders className="w-3 h-3 text-sky-400" /> Scale Slider:
+            </span>
+            <span className="font-mono text-neutral-300">{Math.round(scale * 100)}%</span>
+          </div>
+          <input
+            type="range"
+            min="0.25"
+            max="1.5"
+            step="0.05"
+            value={scale}
+            onChange={handleSliderChange}
+            data-testid="zoom-scale-slider"
+            className="w-full accent-sky-500 cursor-pointer h-1.5 bg-neutral-700 rounded-lg appearance-none"
+          />
+        </div>
+
+        {/* 100ms Transition Toggle */}
+        <div className="flex items-center justify-between gap-3 pt-1 border-t border-neutral-800">
+          <span className="flex items-center gap-1 text-neutral-300">
+            <RefreshCw className="w-3 h-3 text-amber-400" />
+            <span>~100ms Cell Refresh</span>
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={enableRefreshTransition}
+            onClick={() => setEnableRefreshTransition(!enableRefreshTransition)}
+            className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+              enableRefreshTransition ? "bg-emerald-600" : "bg-neutral-700"
+            }`}
+          >
+            <span
+              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                enableRefreshTransition ? "translate-x-4" : "translate-x-0"
+              }`}
+            />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

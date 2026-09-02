@@ -1,6 +1,12 @@
 import { PosButton } from "@/components/common/PosButton";
+import {
+  ArrowDownDoubleIcon,
+  ArrowDownSingleIcon,
+  ArrowUpDoubleIcon,
+  ArrowUpSingleIcon,
+  NavArrowRightIcon,
+} from "@/components/common/PosIcons";
 import { usePosStore } from "@/store/usePosStore";
-import { ArrowBigRight, ArrowDown, ArrowUp, ChevronsDown, ChevronsUp } from "lucide-react";
 import React from "react";
 
 export const FinalizeShell: React.FC = () => {
@@ -38,35 +44,35 @@ export const FinalizeShell: React.FC = () => {
         <div className="grid grid-cols-4 gap-1 w-[45%]">
           <PosButton
             variant="nav-blue"
-            className="p-0"
+            className="p-0 flex items-center justify-center bg-[#0284c7]"
             onClick={() => reorderDrink("up")}
             aria-label="Move line up"
           >
-            <ArrowUp className="w-5 h-5 text-amber-300 stroke-[3]" />
+            <ArrowUpSingleIcon className="w-6 h-6 drop-shadow-sm" />
           </PosButton>
           <PosButton
             variant="nav-blue"
-            className="p-0"
+            className="p-0 flex items-center justify-center bg-[#0284c7]"
             onClick={() => reorderDrink("top")}
             aria-label="Move line to top"
           >
-            <ChevronsUp className="w-5 h-5 text-amber-300 stroke-[3]" />
+            <ArrowUpDoubleIcon className="w-6 h-6 drop-shadow-sm" />
           </PosButton>
           <PosButton
             variant="nav-blue"
-            className="p-0"
+            className="p-0 flex items-center justify-center bg-[#0284c7]"
             onClick={() => reorderDrink("bottom")}
             aria-label="Move line to bottom"
           >
-            <ChevronsDown className="w-5 h-5 text-amber-300 stroke-[3]" />
+            <ArrowDownDoubleIcon className="w-6 h-6 drop-shadow-sm" />
           </PosButton>
           <PosButton
             variant="nav-blue"
-            className="p-0"
+            className="p-0 flex items-center justify-center bg-[#0284c7]"
             onClick={() => reorderDrink("down")}
             aria-label="Move line down"
           >
-            <ArrowDown className="w-5 h-5 text-amber-300 stroke-[3]" />
+            <ArrowDownSingleIcon className="w-6 h-6 drop-shadow-sm" />
           </PosButton>
         </div>
 
@@ -138,8 +144,8 @@ export const FinalizeShell: React.FC = () => {
         <PosButton variant="default" className="text-[11px] font-black">
           TRANS. INQ.
         </PosButton>
-        <PosButton variant="serve-yellow" className="p-0">
-          <ArrowBigRight className="w-8 h-8 text-blue-700 fill-blue-600" />
+        <PosButton variant="serve-yellow" className="p-0 flex items-center justify-center">
+          <NavArrowRightIcon className="w-8 h-8" />
         </PosButton>
       </div>
     </section>

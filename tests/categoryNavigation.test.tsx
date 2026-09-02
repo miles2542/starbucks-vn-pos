@@ -43,11 +43,12 @@ describe("Category Grid & Navigation", () => {
     expect(screen.getByRole("button", { name: "FY26-27 AUTUMN" })).toBeInTheDocument();
   });
 
-  it("highlights the currently active category", () => {
+  it("does not render artificial persistent selection glow on category buttons", () => {
     render(<CategoryGrid />);
 
     const hotEspBtn = screen.getByRole("button", { name: "HOT ESP" });
-    expect(hotEspBtn.className).toContain("pos-btn-category-active");
+    expect(hotEspBtn.className).not.toContain("pos-btn-category-active");
+    expect(hotEspBtn.className).not.toContain("ring-");
   });
 
   it("switches category, triggers refresh animation, and updates breadcrumb banner", () => {
