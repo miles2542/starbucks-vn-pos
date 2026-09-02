@@ -4,10 +4,10 @@ import type { MenuItem } from '@/types/pos';
 export const SUMMER_3_ITEMS: MenuItem[] = [
   // Row 1
   {
-    id: 't_tearamsu',
+    id: 't_tearamisu',
     categoryId: 'summer_3',
-    name: 'T Tearamsu',
-    baseName: 'Tearamsu',
+    name: 'T Tearamisu',
+    baseName: 'Tearamisu',
     hasSizes: true,
     price: 85000,
     prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
@@ -142,10 +142,10 @@ export const SUMMER_3_ITEMS: MenuItem[] = [
     col: 2,
   },
   {
-    id: 't_redbean_cf_t',
+    id: 't_redbean_gt',
     categoryId: 'summer_3',
-    name: 'T Redbean CF T',
-    baseName: 'Redbean CF T',
+    name: 'T Redbean GT',
+    baseName: 'Redbean GT',
     hasSizes: true,
     price: 85000,
     prices: { S: 80000, T: 85000, G: 95000, V: 105000 },

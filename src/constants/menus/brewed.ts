@@ -5,7 +5,7 @@ export const BREWED_ITEMS: MenuItem[] = [
   {
     id: 'cold_brew',
     categoryId: 'brewed',
-    name: 'T Cold Brew',
+    name: 'Cold Brew',
     baseName: 'Cold Brew',
     hasSizes: true,
     price: 70000,
@@ -16,7 +16,7 @@ export const BREWED_ITEMS: MenuItem[] = [
   {
     id: 'nitro',
     categoryId: 'brewed',
-    name: 'T Nitro',
+    name: 'Nitro',
     baseName: 'Nitro',
     hasSizes: true,
     price: 85000,

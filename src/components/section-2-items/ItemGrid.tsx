@@ -255,7 +255,7 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
             }
 
             const displayName =
-              item.hasSizes || /^[STGV]\s+/.test(item.name)
+              /^[STGV]\s+/.test(item.name)
                 ? `${activeSize} ${item.baseName || item.name.replace(/^[STGV]\s+/, "")}`
                 : item.name;
 

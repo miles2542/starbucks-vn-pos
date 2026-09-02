@@ -56,13 +56,13 @@ export const OrderDisplayShell: React.FC = () => {
       <div className="h-[34px] bg-[#433e75] border-b border-[#2e2a52] flex items-stretch text-xs font-black">
         <div
           data-testid="order-serve-type"
-          className="w-1/2 flex items-center px-3 text-[#ff7777] border-r border-[#57528e] uppercase tracking-wide truncate"
+          className="w-1/2 flex items-center px-3 text-[#ff7777] border-r border-[#57528e] tracking-wide truncate"
         >
           {currentServeType}
         </div>
         <div
           data-testid="order-number"
-          className="w-1/2 flex items-center justify-end px-3 text-[#ff7777] uppercase tracking-wide truncate"
+          className="w-1/2 flex items-center justify-end px-3 text-[#ff7777] tracking-wide truncate"
         >
           Order No:{orderNumber}
         </div>
