@@ -256,3 +256,55 @@ export const TEA_HIBICUS_ITEMS: MenuItem[] = [
     col: 3,
   },
 ];
+
+// Subcategory: Zen Oolong Tea
+export const TEA_ZEN_OOLONG_ITEMS: MenuItem[] = [
+  {
+    id: 't_zen_oolong',
+    categoryId: 'tea',
+    name: 'T Zen Oolong',
+    baseName: 'Zen Oolong',
+    hasSizes: true,
+    price: 60000,
+    prices: { S: 55000, T: 60000, G: 70000, V: 80000 },
+    row: 1,
+    col: 1,
+  },
+  {
+    id: 't_iced_zen_oolong',
+    categoryId: 'tea',
+    name: 'T Iced Zen Oolong',
+    baseName: 'Iced Zen Oolong',
+    hasSizes: true,
+    price: 60000,
+    prices: { S: 55000, T: 60000, G: 70000, V: 80000 },
+    row: 1,
+    col: 2,
+  },
+];
+
+// Subcategory: CHAMOMILE
+export const TEA_CHAMOMILE_ITEMS: MenuItem[] = [
+  {
+    id: 't_chamomile',
+    categoryId: 'tea',
+    name: 'T CHAMOMILE',
+    baseName: 'CHAMOMILE',
+    hasSizes: true,
+    price: 60000,
+    prices: { S: 55000, T: 60000, G: 70000, V: 80000 },
+    row: 1,
+    col: 1,
+  },
+  {
+    id: 't_iced_chamomile',
+    categoryId: 'tea',
+    name: 'T Iced CHAMOMILE',
+    baseName: 'Iced CHAMOMILE',
+    hasSizes: true,
+    price: 60000,
+    prices: { S: 55000, T: 60000, G: 70000, V: 80000 },
+    row: 1,
+    col: 2,
+  },
+];

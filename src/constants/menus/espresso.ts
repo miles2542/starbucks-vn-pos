@@ -111,8 +111,8 @@ export const HOT_ESP_ITEMS: MenuItem[] = [
   {
     id: 'doppio_con_pana',
     categoryId: 'hot_esp',
-    name: 'DOPPIO CON PANA',
-    baseName: 'DOPPIO CON PANA',
+    name: 'DOPPIO CON PANNA',
+    baseName: 'DOPPIO CON PANNA',
     hasSizes: false,
     price: 60000,
     row: 3,

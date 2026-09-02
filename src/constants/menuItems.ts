@@ -11,6 +11,8 @@ import {
   TEA_EMP_ITEMS,
   TEA_MINT_CITRUS_ITEMS,
   TEA_HIBICUS_ITEMS,
+  TEA_ZEN_OOLONG_ITEMS,
+  TEA_CHAMOMILE_ITEMS,
 } from './menus/teaSubcategories';
 import {
   OTHER_HI_ITEMS,
@@ -43,11 +45,16 @@ export const MENU_ITEMS_BY_CATEGORY: Record<string, MenuItem[]> = {
   tea_ds_black_tea: TEA_DS_BLACK_TEA_ITEMS,
   tea_ds_green_tea: TEA_DS_GREEN_TEA_ITEMS,
   tea_latte: TEA_LATTE_ITEMS,
+  tea_tea_latte: TEA_LATTE_ITEMS,
   tea_eng_breakfast: TEA_ENG_BREAKFAST_ITEMS,
   tea_earl_grey: TEA_EARL_GREY_ITEMS,
   tea_emp: TEA_EMP_ITEMS,
   tea_mint_citrus: TEA_MINT_CITRUS_ITEMS,
   tea_hibicus: TEA_HIBICUS_ITEMS,
+  tea_zen_oolong_tea: TEA_ZEN_OOLONG_ITEMS,
+  zen_oolong_tea: TEA_ZEN_OOLONG_ITEMS,
+  tea_chamomile: TEA_CHAMOMILE_ITEMS,
+  chamomile: TEA_CHAMOMILE_ITEMS,
 
   // Other H/I & Subcategories
   other_hi: OTHER_HI_ITEMS,
