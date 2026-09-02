@@ -36,7 +36,7 @@ describe("Ticket 03: Beverage Ordering, Size Switching & Order Display", () => {
       "DOPPIO ESPRESSO",
       "SOLO MACCHIATO",
       "DOPPIO MACCHIATO",
-      "DOPPIO CON PANNA",
+      "DOPPIO CON PANA",
       "SOLO CON PANNA",
       "T FLAT WHITE",
       "T AHL",

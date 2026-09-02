@@ -1,368 +1,109 @@
-import type { MenuItem, SizeCode } from "@/types/pos";
+import type { MenuItem, SizeCode } from '@/types/pos';
+import { HOT_ESP_ITEMS, ICED_ESP_ITEMS } from './menus/espresso';
+import { COFFEE_FRAPP_ITEMS, CREAM_FRAPP_ITEMS } from './menus/frappuccino';
+import { BLENDED_JUICE_ITEMS } from './menus/blendedJuice';
+import { BREWED_ITEMS } from './menus/brewed';
+import { TEA_ITEMS, TEA_DS_BLACK_TEA_ITEMS, TEA_DS_GREEN_TEA_ITEMS } from './menus/tea';
+import {
+  TEA_LATTE_ITEMS,
+  TEA_ENG_BREAKFAST_ITEMS,
+  TEA_EARL_GREY_ITEMS,
+  TEA_EMP_ITEMS,
+  TEA_MINT_CITRUS_ITEMS,
+  TEA_HIBICUS_ITEMS,
+} from './menus/teaSubcategories';
+import {
+  OTHER_HI_ITEMS,
+  OTHER_HI_SIGNATURE_ITEMS,
+  OTHER_HI_MILK_ITEMS,
+  OTHER_HI_REFRESHERS_ITEMS,
+} from './menus/otherHi';
+import { FOOD_ITEMS, FOOD_BAKERY_ITEMS } from './menus/food';
+import { FOOD_DESSERTS_ITEMS, FOOD_SANDWICHES_ITEMS } from './menus/foodSubcategories';
+import { SUMMER_3_ITEMS, AUTUMN_ITEMS } from './menus/seasonal';
+import { PK_HN_ITEMS, PACKAGING_ITEMS, DISCOUNT_ITEMS } from './menus/retail';
 
 export const MENU_ITEMS_BY_CATEGORY: Record<string, MenuItem[]> = {
-  hot_esp: [
-    // Row 1
-    {
-      id: "t_latte",
-      categoryId: "hot_esp",
-      name: "T LATTE",
-      baseName: "LATTE",
-      hasSizes: true,
-      price: 75000,
-      prices: { S: 70000, T: 75000, G: 85000, V: 95000 },
-      row: 1,
-      col: 1,
-    },
-    {
-      id: "t_cappuccino",
-      categoryId: "hot_esp",
-      name: "T CAPPUCCINO",
-      baseName: "CAPPUCCINO",
-      hasSizes: true,
-      price: 75000,
-      prices: { S: 70000, T: 75000, G: 85000, V: 95000 },
-      row: 1,
-      col: 2,
-    },
-    {
-      id: "t_mocha",
-      categoryId: "hot_esp",
-      name: "T MOCHA",
-      baseName: "MOCHA",
-      hasSizes: true,
-      price: 85000,
-      prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
-      row: 1,
-      col: 3,
-    },
-    {
-      id: "t_cm",
-      categoryId: "hot_esp",
-      name: "T CM",
-      baseName: "CM",
-      hasSizes: true,
-      price: 85000,
-      prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
-      row: 1,
-      col: 4,
-    },
-    {
-      id: "t_americano",
-      categoryId: "hot_esp",
-      name: "T AMERICANO",
-      baseName: "AMERICANO",
-      hasSizes: true,
-      price: 65000,
-      prices: { S: 60000, T: 65000, G: 75000, V: 85000 },
-      row: 1,
-      col: 5,
-    },
+  // Hot & Iced Espresso
+  hot_esp: HOT_ESP_ITEMS,
+  iced_esp: ICED_ESP_ITEMS,
 
-    // Row 2
-    {
-      id: "t_adl",
-      categoryId: "hot_esp",
-      name: "T ADL",
-      baseName: "ADL",
-      hasSizes: true,
-      price: 85000,
-      prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
-      row: 2,
-      col: 1,
-    },
-    {
-      id: "solo_espresso",
-      categoryId: "hot_esp",
-      name: "SOLO ESPRESSO",
-      hasSizes: false,
-      price: 45000,
-      row: 2,
-      col: 2,
-    },
-    {
-      id: "doppio_espresso",
-      categoryId: "hot_esp",
-      name: "DOPPIO ESPRESSO",
-      hasSizes: false,
-      price: 55000,
-      row: 2,
-      col: 3,
-    },
-    {
-      id: "solo_macchiato",
-      categoryId: "hot_esp",
-      name: "SOLO MACCHIATO",
-      hasSizes: false,
-      price: 50000,
-      row: 2,
-      col: 4,
-    },
-    {
-      id: "doppio_macchiato",
-      categoryId: "hot_esp",
-      name: "DOPPIO MACCHIATO",
-      hasSizes: false,
-      price: 60000,
-      row: 2,
-      col: 5,
-    },
+  // Frappuccinos
+  coffee_frapp: COFFEE_FRAPP_ITEMS,
+  cream_frapp: CREAM_FRAPP_ITEMS,
 
-    // Row 3
-    {
-      id: "doppio_con_panna",
-      categoryId: "hot_esp",
-      name: "DOPPIO CON PANNA",
-      hasSizes: false,
-      price: 60000,
-      row: 3,
-      col: 1,
-    },
-    {
-      id: "solo_con_panna",
-      categoryId: "hot_esp",
-      name: "SOLO CON PANNA",
-      hasSizes: false,
-      price: 50000,
-      row: 3,
-      col: 2,
-    },
-    {
-      id: "t_flat_white",
-      categoryId: "hot_esp",
-      name: "T FLAT WHITE",
-      baseName: "FLAT WHITE",
-      hasSizes: true,
-      price: 80000,
-      prices: { S: 75000, T: 80000, G: 90000, V: 100000 },
-      row: 3,
-      col: 3,
-    },
-    {
-      id: "t_ahl",
-      categoryId: "hot_esp",
-      name: "T AHL",
-      baseName: "AHL",
-      hasSizes: true,
-      price: 85000,
-      prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
-      row: 3,
-      col: 4,
-    },
-    {
-      id: "t_ccrl",
-      categoryId: "hot_esp",
-      name: "T CCRL",
-      baseName: "CCRL",
-      hasSizes: true,
-      price: 85000,
-      prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
-      row: 3,
-      col: 5,
-    },
-  ],
+  // Blended Juice
+  blended_juice: BLENDED_JUICE_ITEMS,
 
-  food_hn_hy_bni: [
-    { id: "bakery_hn", categoryId: "food_hn_hy_bni", name: "BAKERY HN", row: 1, col: 1, isSubcategory: true },
-    { id: "desserts_hn", categoryId: "food_hn_hy_bni", name: "DESSERTS HN", row: 1, col: 2, isSubcategory: true },
-    { id: "sandwiches_hn", categoryId: "food_hn_hy_bni", name: "SANDWICHES HN", row: 1, col: 3, isSubcategory: true },
-    { id: "snack_mixology_hn", categoryId: "food_hn_hy_bni", name: "Snack Mixology HN", row: 1, col: 4, isSubcategory: true },
-  ],
+  // Brewed Coffee
+  brewed: BREWED_ITEMS,
 
-  bakery_hn: [
-    // Row 1
-    {
-      id: "mon_chocolate_donut",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Mon Chocolate Donut",
-      price: 45000,
-      soldOut: true,
-      row: 1,
-      col: 1,
-    },
-    {
-      id: "butter_croissant_fz",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Butter Croissant FZ",
-      price: 45000,
-      stock: 4,
-      row: 1,
-      col: 2,
-    },
-    {
-      id: "chocolate_croissant",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Chocolate Croissant",
-      price: 50000,
-      stock: 2,
-      row: 1,
-      col: 3,
-    },
-    {
-      id: "mini_donuts",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Mini Donuts",
-      price: 40000,
-      stock: 5,
-      row: 1,
-      col: 4,
-    },
-    {
-      id: "apple_strudel",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Apple Strudel",
-      price: 55000,
-      soldOut: true,
-      row: 1,
-      col: 5,
-    },
+  // Tea & Subcategories
+  tea: TEA_ITEMS,
+  tea_ds_black_tea: TEA_DS_BLACK_TEA_ITEMS,
+  tea_ds_green_tea: TEA_DS_GREEN_TEA_ITEMS,
+  tea_latte: TEA_LATTE_ITEMS,
+  tea_eng_breakfast: TEA_ENG_BREAKFAST_ITEMS,
+  tea_earl_grey: TEA_EARL_GREY_ITEMS,
+  tea_emp: TEA_EMP_ITEMS,
+  tea_mint_citrus: TEA_MINT_CITRUS_ITEMS,
+  tea_hibicus: TEA_HIBICUS_ITEMS,
 
-    // Row 2
-    {
-      id: "banana_chocolate_muf",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Banana Chocolate Muf",
-      price: 55000,
-      stock: 5,
-      row: 2,
-      col: 1,
-    },
-    {
-      id: "skinny_blueberry_muf",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Skinny Blueberry Muf",
-      price: 55000,
-      stock: 3,
-      row: 2,
-      col: 2,
-    },
-    {
-      id: "pistachio_croissant",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Pistachio Croissant",
-      price: 65000,
-      soldOut: true,
-      row: 2,
-      col: 3,
-    },
-    {
-      id: "banana_loaf",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Banana Loaf",
-      price: 50000,
-      soldOut: true,
-      row: 2,
-      col: 4,
-    },
-    {
-      id: "apple_turnover",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Apple Turnover",
-      price: 55000,
-      soldOut: true,
-      row: 2,
-      col: 5,
-    },
+  // Other H/I & Subcategories
+  other_hi: OTHER_HI_ITEMS,
+  other_hi_signature: OTHER_HI_SIGNATURE_ITEMS,
+  other_hi_milk: OTHER_HI_MILK_ITEMS,
+  other_hi_refreshers: OTHER_HI_REFRESHERS_ITEMS,
 
-    // Row 3
-    {
-      id: "matcha_croissant",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Matcha Croissant",
-      price: 65000,
-      soldOut: true,
-      row: 3,
-      col: 1,
-    },
-    {
-      id: "almond_croissant_vn",
-      categoryId: "food_hn_hy_bni",
-      subcategoryId: "bakery_hn",
-      name: "Almond Croissant VN",
-      price: 60000,
-      soldOut: true,
-      row: 3,
-      col: 2,
-    },
-  ],
+  // Food HN HY BNI & Subcategories
+  food_hn_hy_bni: FOOD_ITEMS,
+  food: FOOD_ITEMS,
+  food_bakery_hn: FOOD_BAKERY_ITEMS,
+  bakery_hn: FOOD_BAKERY_ITEMS,
+  food_desserts_hn: FOOD_DESSERTS_ITEMS,
+  desserts_hn: FOOD_DESSERTS_ITEMS,
+  food_sandwiches_hn: FOOD_SANDWICHES_ITEMS,
+  sandwiches_hn: FOOD_SANDWICHES_ITEMS,
+  food_snack_mixology_hn: [],
 
-  iced_esp: [
-    { id: "g_iced_latte", categoryId: "iced_esp", name: "G ICED LATTE", price: 85000, row: 1, col: 1 },
-    { id: "g_iced_cappuccino", categoryId: "iced_esp", name: "G ICED CAPPUCCINO", price: 85000, row: 1, col: 2 },
-    { id: "g_iced_mocha", categoryId: "iced_esp", name: "G ICED MOCHA", price: 95000, row: 1, col: 3 },
-    { id: "g_iced_cm", categoryId: "iced_esp", name: "G ICED CM", price: 95000, row: 1, col: 4 },
-    { id: "g_iced_americano", categoryId: "iced_esp", name: "G ICED AMERICANO", price: 75000, row: 1, col: 5 },
-  ],
+  // Seasonal
+  summer_3: SUMMER_3_ITEMS,
+  autumn_26_27: AUTUMN_ITEMS,
+  autumn: AUTUMN_ITEMS,
 
-  coffee_frapp: [
-    { id: "g_cf", categoryId: "coffee_frapp", name: "G COFFEE FRAPP", price: 90000, row: 1, col: 1 },
-    { id: "g_crf", categoryId: "coffee_frapp", name: "G CARAMEL FRAPP", price: 100000, row: 1, col: 2 },
-    { id: "g_mf", categoryId: "coffee_frapp", name: "G MOCHA FRAPP", price: 100000, row: 1, col: 3 },
-    { id: "g_jcf", categoryId: "coffee_frapp", name: "G JAVA CHIP FRAPP", price: 105000, row: 1, col: 4 },
-  ],
+  // Retail, Packaging & Discounts
+  pk_hn: PK_HN_ITEMS,
+  packaging: PACKAGING_ITEMS,
+  discount: DISCOUNT_ITEMS,
 
-  cream_frapp: [
-    { id: "g_vanilla_cf", categoryId: "cream_frapp", name: "G VANILLA CREAM", price: 90000, row: 1, col: 1 },
-    { id: "g_green_tea_cf", categoryId: "cream_frapp", name: "G GREEN TEA CREAM", price: 100000, row: 1, col: 2 },
-    { id: "g_caramel_cf", categoryId: "cream_frapp", name: "G CARAMEL CREAM", price: 100000, row: 1, col: 3 },
-  ],
-
-  blended_juice: [
-    { id: "g_mango_passion", categoryId: "blended_juice", name: "G MANGO PASSION", price: 85000, row: 1, col: 1 },
-    { id: "g_raspberry_black", categoryId: "blended_juice", name: "G RASPBERRY BLACK", price: 85000, row: 1, col: 2 },
-  ],
-
-  brewed: [
-    { id: "t_brewed_today", categoryId: "brewed", name: "T BREWED TODAY", price: 55000, row: 1, col: 1 },
-    { id: "t_mistoo", categoryId: "brewed", name: "T CAFE MISTO", price: 65000, row: 1, col: 2 },
-  ],
-
-  tea: [
-    { id: "g_iced_btg", categoryId: "tea", name: "G ICED BTG", price: 70000, row: 1, col: 1 },
-    { id: "g_iced_gtg", categoryId: "tea", name: "G ICED GTG", price: 70000, row: 1, col: 2 },
-    { id: "g_iced_ptg", categoryId: "tea", name: "G ICED PTG", price: 70000, row: 1, col: 3 },
-    { id: "t_hot_tea", categoryId: "tea", name: "T HOT TEA", price: 60000, row: 1, col: 4 },
-  ],
-
-  summer_3: [
-    { id: "g_summer_special_1", categoryId: "summer_3", name: "G YUZU BLACK TEA", price: 95000, row: 1, col: 1 },
-    { id: "g_summer_special_2", categoryId: "summer_3", name: "G COCONUT LATTE", price: 95000, row: 1, col: 2 },
-  ],
+  // Empty / Delivery / Sbux Card stubs
+  sbux_card: [],
+  delivery_item: [],
+  sbapp_merchandise: [],
 };
 
 export const MODIFIER_COLUMN_BUTTONS = [
-  { id: "modifier_btn", name: "Modifier", row: 1 },
-  { id: "x1_btn", name: "X 1", row: 2, multiplier: 1 },
-  { id: "x2_btn", name: "X 2", row: 3, multiplier: 2 },
-  { id: "x3_btn", name: "X 3", row: 4, multiplier: 3 },
-  { id: "x4_btn", name: "X 4", row: 5, multiplier: 4 },
-  { id: "qty_btn", name: "QTY", row: 6 },
+  { id: 'modifier_btn', name: 'Modifier', row: 1 },
+  { id: 'x1_btn', name: 'X 1', row: 2, multiplier: 1 },
+  { id: 'x2_btn', name: 'X 2', row: 3, multiplier: 2 },
+  { id: 'x3_btn', name: 'X 3', row: 4, multiplier: 3 },
+  { id: 'x4_btn', name: 'X 4', row: 5, multiplier: 4 },
+  { id: 'qty_btn', name: 'QTY', row: 6 },
 ];
 
 export const SIZE_COLUMN_BUTTONS = [
-  { id: "size_short", name: "Short", size: "S" as SizeCode, row: 1 },
-  { id: "size_tall", name: "Tall", size: "T" as SizeCode, row: 2 },
-  { id: "size_grande", name: "Grande", size: "G" as SizeCode, row: 3 },
-  { id: "size_venti", name: "Venti", size: "V" as SizeCode, row: 4 },
-  { id: "size_change", name: "Change Size", row: 5 },
-  { id: "size_sets", name: "Sets order", row: 6 },
+  { id: 'size_short', name: 'Short', size: 'S' as SizeCode, row: 1 },
+  { id: 'size_tall', name: 'Tall', size: 'T' as SizeCode, row: 2 },
+  { id: 'size_grande', name: 'Grande', size: 'G' as SizeCode, row: 3 },
+  { id: 'size_venti', name: 'Venti', size: 'V' as SizeCode, row: 4 },
+  { id: 'size_change', name: 'Change Size', row: 5 },
+  { id: 'size_sets', name: 'Sets order', row: 6 },
 ];
 
 export const TENDER_ROW_BUTTONS = [
-  { id: "tender_sbux_card", name: "SBUX CARD", col: 2, variant: "tender-cyan" as const },
-  { id: "tender_foody", name: "FOODY/AIRPAY", col: 3, variant: "tender-grey" as const },
-  { id: "tender_grab", name: "GRAB", col: 4, variant: "tender-grey" as const },
-  { id: "tender_payoo_promo", name: "PAYOO PROMO", col: 5, variant: "tender-grey" as const },
-  { id: "tender_payoo_qr", name: "PAYOO QR", col: 6, variant: "tender-grey" as const },
+  { id: 'tender_sbux_card', name: 'SBUX CARD', col: 2, variant: 'tender-cyan' as const },
+  { id: 'tender_foody', name: 'FOODY/AIRPAY', col: 3, variant: 'tender-grey' as const },
+  { id: 'tender_grab', name: 'GRAB', col: 4, variant: 'tender-grey' as const },
+  { id: 'tender_payoo_promo', name: 'PAYOO PROMO', col: 5, variant: 'tender-grey' as const },
+  { id: 'tender_payoo_qr', name: 'PAYOO QR', col: 6, variant: 'tender-grey' as const },
 ];
