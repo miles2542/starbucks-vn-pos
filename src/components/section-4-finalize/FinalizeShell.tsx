@@ -46,7 +46,7 @@ export const FinalizeShell: React.FC = () => {
   return (
     <section
       data-testid="section-4-finalize-section"
-      className="flex-[4] bg-[#aeaeb0] border-r border-[#8e8e90] p-1 flex flex-col gap-1 select-none"
+      className="flex-[4] bg-[#aeaeb0] border-r border-[#000000] p-1 flex flex-col gap-1 select-none"
     >
       {/* Top Total & Order Navigation Row */}
       <div className="h-[48px] flex items-stretch gap-1">
@@ -90,7 +90,7 @@ export const FinalizeShell: React.FC = () => {
           type="button"
           data-testid="total-amount-display"
           onClick={handleTotalAmountClick}
-          className={`flex-1 bg-[#97b2e6] border-t border-l border-[#6888c4] border-b border-r border-[#c2d5f8] rounded-[1px] flex items-center justify-end px-3 font-black text-2xl text-[#000000] shadow-inner ${
+          className={`flex-1 bg-[#97b2e6] border border-[#000000] rounded-none flex items-center justify-end px-3 font-black text-2xl text-[#000000] ${
             orderItems.length > 0 && !isPaymentMode ? "cursor-pointer active:brightness-95" : ""
           }`}
         >

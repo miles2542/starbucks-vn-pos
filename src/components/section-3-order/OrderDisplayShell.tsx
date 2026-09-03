@@ -51,19 +51,19 @@ export const OrderDisplayShell: React.FC = () => {
   return (
     <section
       data-testid="section-3-order-display"
-      className="flex-[5] bg-[#7a7a78] border-r border-b border-[#aeaeb0] flex flex-col justify-start overflow-hidden select-none"
+      className="flex-[5] bg-[#7a7a78] border-r border-b border-[#000000] flex flex-col justify-start overflow-hidden select-none"
     >
       {/* Upper Row 1: Split Purple Row (#795fb3) */}
-      <div className="h-[22px] bg-[#795fb3] flex items-stretch border-b border-[#aeaeb0] text-xs font-black shrink-0">
-        <div className="w-[58%] border-r border-[#644a9e]" />
+      <div className="h-[22px] bg-[#795fb3] flex items-stretch border-b border-[#000000] text-xs font-black shrink-0">
+        <div className="w-[58%] border-r border-[#000000]" />
         <div className="w-[42%]" />
       </div>
 
       {/* Upper Row 2: Status & Order Number Row (#9c948e, text #b94026) */}
-      <div className="h-[26px] bg-[#9c948e] flex items-stretch text-xs font-black border-b border-[#aeaeb0] shrink-0">
+      <div className="h-[26px] bg-[#9c948e] flex items-stretch text-xs font-black border-b border-[#000000] shrink-0">
         <div
           data-testid="order-serve-type"
-          className="w-[58%] flex items-center px-2 text-[#b94026] border-r border-[#837c76] tracking-wide truncate"
+          className="w-[58%] flex items-center px-2 text-[#b94026] border-r border-[#000000] tracking-wide truncate"
         >
           {currentServeType}
         </div>

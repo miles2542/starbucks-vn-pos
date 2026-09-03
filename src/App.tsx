@@ -28,7 +28,7 @@ export const App: React.FC = () => {
         {/* Main POS Interface Body */}
         <main className="flex-1 flex overflow-hidden bg-[#aeaeb0]">
           {/* Left Column: Sections III & IV */}
-          <div className="w-[32%] flex flex-col border-r border-[#8e8e90] bg-[#aeaeb0]">
+          <div className="w-[32%] flex flex-col border-r border-[#000000] bg-[#aeaeb0]">
             <OrderDisplayShell />
             <FinalizeShell />
           </div>
