@@ -51,27 +51,33 @@ export const OrderDisplayShell: React.FC = () => {
   return (
     <section
       data-testid="section-3-order-display"
-      className="flex-[5] bg-[#9ba9b8] border-r border-b border-[#64748b] flex flex-col justify-between overflow-hidden select-none"
+      className="flex-[5] bg-[#7a7a78] border-r border-b border-[#aeaeb0] flex flex-col justify-start overflow-hidden select-none"
     >
-      {/* Top Purple Order Status Strip */}
-      <div className="h-[34px] bg-[#433e75] border-b border-[#2e2a52] flex items-stretch text-xs font-black">
+      {/* Upper Row 1: Split Purple Row (#795fb3) */}
+      <div className="h-[22px] bg-[#795fb3] flex items-stretch border-b border-[#aeaeb0] text-xs font-black shrink-0">
+        <div className="w-[58%] border-r border-[#644a9e]" />
+        <div className="w-[42%]" />
+      </div>
+
+      {/* Upper Row 2: Status & Order Number Row (#9c948e, text #b94026) */}
+      <div className="h-[26px] bg-[#9c948e] flex items-stretch text-xs font-black border-b border-[#aeaeb0] shrink-0">
         <div
           data-testid="order-serve-type"
-          className="w-1/2 flex items-center px-3 text-[#ff7777] border-r border-[#57528e] tracking-wide truncate"
+          className="w-[58%] flex items-center px-2 text-[#b94026] border-r border-[#837c76] tracking-wide truncate"
         >
           {currentServeType}
         </div>
         <div
           data-testid="order-number"
-          className="w-1/2 flex items-center justify-end px-3 text-[#ff7777] tracking-wide truncate"
+          className="w-[42%] flex items-center justify-end px-2 text-[#b94026] tracking-wide truncate"
         >
           Order No:{orderNumber}
         </div>
       </div>
 
       {/* Main Order Items List Container */}
-      <div className="flex-1 bg-[#8f9fae] p-1 overflow-y-auto font-sans flex flex-col justify-between">
-        <div className="flex flex-col gap-0.5" data-testid="order-items-list">
+      <div className="flex-1 bg-[#7a7a78] p-0.5 overflow-y-auto font-sans flex flex-col justify-start">
+        <div className="flex flex-col gap-[1px]" data-testid="order-items-list">
           {orderItems.map((item, index) => {
             const isItemSelected = selectedLineId === item.id;
             const suffix = getServeTypeSuffix(item.serveType, currentServeType);
@@ -84,10 +90,10 @@ export const OrderDisplayShell: React.FC = () => {
                   data-testid={`order-item-row-${item.id}`}
                   onClick={() => selectLine(item.id)}
                   className={clsx(
-                    "flex items-center px-2 py-1 cursor-pointer text-xs font-bold transition-colors select-none",
+                    "flex items-center px-2 py-1 cursor-pointer text-xs font-bold select-none",
                     isItemSelected
-                      ? "bg-[#a2c374] text-[#111827] shadow-sm"
-                      : "bg-[#cfd7df] text-[#1e293b] hover:bg-[#d8e0e7]",
+                      ? "bg-[#9bc272] text-[#000000]"
+                      : "bg-[#cfcfd2] text-[#000000] hover:bg-[#d8d8dc]",
                   )}
                 >
                   {/* Line Number */}
@@ -119,17 +125,17 @@ export const OrderDisplayShell: React.FC = () => {
                       data-testid={`order-modifier-row-${mod.id}`}
                       onClick={() => selectLine(mod.id)}
                       className={clsx(
-                        "flex items-center px-2 py-0.5 cursor-pointer text-xs font-semibold transition-colors select-none pl-6",
+                        "flex items-center px-2 py-0.5 cursor-pointer text-xs font-semibold select-none pl-6",
                         isModSelected
-                          ? "bg-[#a2c374] text-[#111827] shadow-sm"
-                          : "bg-[#cfd7df]/80 text-[#1e293b] hover:bg-[#d8e0e7]",
+                          ? "bg-[#9bc272] text-[#000000]"
+                          : "bg-[#cfcfd2]/90 text-[#000000] hover:bg-[#d8d8dc]",
                       )}
                     >
                       {/* Blank line number column for alignment */}
                       <span className="w-4 text-left shrink-0" />
 
                       {/* Indented Modifier Name */}
-                      <span className="flex-1 text-left truncate pr-1 text-[#334155]">
+                      <span className="flex-1 text-left truncate pr-1">
                         &gt; {mod.name}
                       </span>
 
@@ -139,7 +145,7 @@ export const OrderDisplayShell: React.FC = () => {
                       </span>
 
                       {/* Modifier Price */}
-                      <span className="w-20 text-right shrink-0 text-[#334155]">
+                      <span className="w-20 text-right shrink-0">
                         {(mod.price * (mod.quantity ?? 1)).toLocaleString("en-US")}
                       </span>
                     </div>
@@ -150,33 +156,35 @@ export const OrderDisplayShell: React.FC = () => {
           })}
         </div>
 
-        {/* Order Summary Area */}
-        <div
-          data-testid="order-summary-box"
-          className="bg-[#c2d5e8] border border-[#a8c2dc] p-1.5 text-xs font-bold text-slate-800 space-y-0.5 mt-1"
-        >
-          <div className="flex items-center">
-            <span className="w-28 text-left">Total Quantity</span>
-            <span className="flex-1 text-center font-bold" data-testid="summary-total-quantity">
-              {totalQuantity}
-            </span>
-            <span className="w-24 text-right font-black" data-testid="summary-running-amount">
-              {totalAmount.toLocaleString("en-US")}
-            </span>
+        {/* Order Summary Area: Rendered directly below last item only when items exist */}
+        {orderItems.length > 0 && (
+          <div
+            data-testid="order-summary-box"
+            className="bg-[#8ac5f3] border border-[#70a6d0] p-1 text-xs font-bold text-[#000000] space-y-0.5 mt-[1px]"
+          >
+            <div className="flex items-center">
+              <span className="w-28 text-left">Total Quantity</span>
+              <span className="flex-1 text-center font-bold" data-testid="summary-total-quantity">
+                {totalQuantity}
+              </span>
+              <span className="w-24 text-right font-black" data-testid="summary-running-amount">
+                {totalAmount.toLocaleString("en-US")}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="w-28 text-left">Tax Amount</span>
+              <span className="w-24 text-right font-bold" data-testid="summary-tax-amount">
+                {taxAmount.toLocaleString("en-US")}
+              </span>
+            </div>
+            <div className="flex justify-between items-center text-[#000000] font-black">
+              <span className="w-28 text-left">Total Amount</span>
+              <span className="w-24 text-right font-black" data-testid="summary-total-amount">
+                {totalAmount.toLocaleString("en-US")}
+              </span>
+            </div>
           </div>
-          <div className="flex justify-between items-center">
-            <span className="w-28 text-left">Tax Amount</span>
-            <span className="w-24 text-right font-bold" data-testid="summary-tax-amount">
-              {taxAmount.toLocaleString("en-US")}
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-slate-950 font-black">
-            <span className="w-28 text-left">Total Amount</span>
-            <span className="w-24 text-right font-black" data-testid="summary-total-amount">
-              {totalAmount.toLocaleString("en-US")}
-            </span>
-          </div>
-        </div>
+        )}
       </div>
     </section>
   );

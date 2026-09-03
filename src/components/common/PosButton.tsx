@@ -26,7 +26,7 @@ export const PosButton: React.FC<PosButtonProps> = ({
 
   const variantClass = {
     default: "pos-btn-default",
-    category: "pos-btn-default",
+    category: "pos-btn-category",
     "category-green": "pos-btn-green",
     "category-cyan": "pos-btn-cyan",
     "modifier-red": "pos-btn-red",

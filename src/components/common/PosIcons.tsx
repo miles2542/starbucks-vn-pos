@@ -21,8 +21,8 @@ export const ArrowUpSingleIcon: React.FC<IconProps> = ({
   >
     <path
       d="M12 4L4 14H9V20H15V14H20L12 4Z"
-      fill="#facc15"
-      stroke="#ca8a04"
+      fill="#d1a655"
+      stroke="#b58c3f"
       strokeWidth="1.2"
       strokeLinejoin="round"
     />
@@ -45,15 +45,15 @@ export const ArrowUpDoubleIcon: React.FC<IconProps> = ({
   >
     <path
       d="M12 2L4 10H8.5V14H15.5V10H20L12 2Z"
-      fill="#facc15"
-      stroke="#ca8a04"
+      fill="#d1a655"
+      stroke="#b58c3f"
       strokeWidth="1.2"
       strokeLinejoin="round"
     />
     <path
       d="M12 11L5 18H8.5V22H15.5V18H19L12 11Z"
-      fill="#facc15"
-      stroke="#ca8a04"
+      fill="#d1a655"
+      stroke="#b58c3f"
       strokeWidth="1.2"
       strokeLinejoin="round"
     />
@@ -76,15 +76,15 @@ export const ArrowDownDoubleIcon: React.FC<IconProps> = ({
   >
     <path
       d="M12 13L5 6H8.5V2H15.5V6H19L12 13Z"
-      fill="#facc15"
-      stroke="#ca8a04"
+      fill="#d1a655"
+      stroke="#b58c3f"
       strokeWidth="1.2"
       strokeLinejoin="round"
     />
     <path
       d="M12 22L4 14H8.5V10H15.5V14H20L12 22Z"
-      fill="#facc15"
-      stroke="#ca8a04"
+      fill="#d1a655"
+      stroke="#b58c3f"
       strokeWidth="1.2"
       strokeLinejoin="round"
     />
@@ -107,8 +107,8 @@ export const ArrowDownSingleIcon: React.FC<IconProps> = ({
   >
     <path
       d="M12 20L4 10H9V4H15V10H20L12 20Z"
-      fill="#facc15"
-      stroke="#ca8a04"
+      fill="#d1a655"
+      stroke="#b58c3f"
       strokeWidth="1.2"
       strokeLinejoin="round"
     />
@@ -131,8 +131,8 @@ export const NavArrowRightIcon: React.FC<IconProps> = ({
   >
     <path
       d="M4 8H13V3L22 12L13 21V16H4V8Z"
-      fill="#1d4ed8"
-      stroke="#1e40af"
+      fill="#0255c3"
+      stroke="#003874"
       strokeWidth="1.5"
       strokeLinejoin="round"
     />

@@ -173,12 +173,12 @@ describe("Ticket 03: Beverage Ordering, Size Switching & Order Display", () => {
     const row1 = screen.getByTestId(`order-item-row-${items[0].id}`);
     const row2 = screen.getByTestId(`order-item-row-${items[1].id}`);
 
-    expect(row2).toHaveClass("bg-[#a2c374]");
+    expect(row2).toHaveClass("bg-[#9bc272]");
 
     // Click row 1 to select T LATTE
     fireEvent.click(row1);
     expect(usePosStore.getState().selectedOrderItemId).toBe(items[0].id);
-    expect(row1).toHaveClass("bg-[#a2c374]");
+    expect(row1).toHaveClass("bg-[#9bc272]");
   });
 
   it("clears order when CLEAR ALL is clicked", () => {
@@ -195,8 +195,8 @@ describe("Ticket 03: Beverage Ordering, Size Switching & Order Display", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "CLEAR ALL" }));
     expect(usePosStore.getState().orderItems).toHaveLength(0);
-    expect(screen.getByTestId("summary-total-quantity")).toHaveTextContent("0");
-    expect(screen.getByTestId("summary-total-amount")).toHaveTextContent("0");
+    expect(screen.queryByTestId("summary-total-quantity")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("summary-total-amount")).not.toBeInTheDocument();
     expect(screen.getByTestId("total-amount-display")).toHaveTextContent("0");
   });
 });

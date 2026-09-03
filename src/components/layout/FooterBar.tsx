@@ -10,7 +10,7 @@ export const FooterBar: React.FC = () => {
   return (
     <footer
       data-testid="footer-status-bar"
-      className="h-[32px] bg-[#e2e8f0] border-t border-[#cbd5e1] flex items-center justify-between px-3 text-[#334155] text-xs font-semibold select-none shrink-0"
+      className="h-[32px] bg-[#aeaeb0] border-t border-[#8e8e90] flex items-center justify-between px-3 text-[#000000] text-xs font-semibold select-none shrink-0"
     >
       {/* Left: Software Version */}
       <div className="flex items-center gap-2">

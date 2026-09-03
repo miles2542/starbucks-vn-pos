@@ -86,7 +86,7 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
   return (
     <section
       data-testid="section-2-item-grid"
-      className="p-1 bg-[#cbd5e1]/30 flex-[3] flex flex-col justify-stretch"
+      className="p-1 bg-[#aeaeb0] flex-[3] flex flex-col justify-stretch"
     >
       <div className="grid grid-cols-7 grid-rows-7 gap-1 w-full h-full">
         {/* Render the 7x7 grid coordinates (row 1-7, col 1-7) */}

@@ -26,15 +26,15 @@ export const App: React.FC = () => {
         <HeaderBar />
 
         {/* Main POS Interface Body */}
-        <main className="flex-1 flex overflow-hidden">
+        <main className="flex-1 flex overflow-hidden bg-[#aeaeb0]">
           {/* Left Column: Sections III & IV */}
-          <div className="w-[32%] flex flex-col border-r border-[#64748b] bg-[#cbd5e1]/20">
+          <div className="w-[32%] flex flex-col border-r border-[#8e8e90] bg-[#aeaeb0]">
             <OrderDisplayShell />
             <FinalizeShell />
           </div>
 
           {/* Right Column: Sections I & II and Breadcrumb */}
-          <div className="w-[68%] flex flex-col bg-[#e2e8f0]">
+          <div className="w-[68%] flex flex-col bg-[#aeaeb0]">
             <CategoryGrid />
             <BreadcrumbBanner />
             <ItemGrid onChangeSizeClick={() => openModal("change_size")} />

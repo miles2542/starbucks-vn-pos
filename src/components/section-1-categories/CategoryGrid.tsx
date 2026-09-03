@@ -30,7 +30,7 @@ export const CategoryGrid: React.FC = () => {
     return (
       <section
         data-testid="section-1-category-grid"
-        className="p-1 bg-[#cbd5e1]/40 border-b border-[#94a3b8] flex-1 flex flex-col justify-stretch"
+        className="p-1 bg-[#aeaeb0] border-b border-[#8e8e90] flex-1 flex flex-col justify-stretch"
       >
         <div className="grid grid-cols-7 grid-rows-3 gap-1 w-full h-full">
           {gridCells.flatMap((rowItems, rIdx) =>
@@ -71,7 +71,7 @@ export const CategoryGrid: React.FC = () => {
   return (
     <section
       data-testid="section-1-category-grid"
-      className="p-1 bg-[#cbd5e1]/40 border-b border-[#94a3b8] flex-1 flex flex-col justify-stretch"
+      className="p-1 bg-[#aeaeb0] border-b border-[#8e8e90] flex-1 flex flex-col justify-stretch"
     >
       <div className="grid grid-cols-7 grid-rows-3 gap-1 w-full h-full">
         {gridCells.flatMap((rowItems, rIdx) =>

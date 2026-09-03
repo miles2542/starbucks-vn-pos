@@ -131,15 +131,15 @@ describe("Ticket 05: Sticky Modifier Matrix and Sub-Page Navigation", () => {
     // Verify LESS Ice sub-line exists
     const modLine = screen.getByText("> LESS Ice").closest("div");
     expect(modLine).toBeInTheDocument();
-    expect(modLine).toHaveClass("bg-[#a2c374]"); // Newly added modifier is highlighted
+    expect(modLine).toHaveClass("bg-[#9bc272]"); // Newly added modifier is highlighted
 
     // Click parent drink
     const drinkLine = screen.getByText("T LATTE").closest("div");
     fireEvent.click(drinkLine!);
 
     // Drink is now highlighted, modifier is not
-    expect(drinkLine).toHaveClass("bg-[#a2c374]");
-    expect(modLine).not.toHaveClass("bg-[#a2c374]");
+    expect(drinkLine).toHaveClass("bg-[#9bc272]");
+    expect(modLine).not.toHaveClass("bg-[#9bc272]");
   });
 
   it("defaults to last item when no line is selected", () => {

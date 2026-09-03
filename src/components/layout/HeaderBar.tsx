@@ -32,7 +32,7 @@ export const HeaderBar: React.FC = () => {
   return (
     <header
       data-testid="header-bar"
-      className="h-[36px] bg-[#f1f3f6] border-b border-[#cbd5e1] flex items-center justify-between px-3 text-[#1e293b] text-xs font-semibold select-none shrink-0"
+      className="h-[36px] bg-[#aeaeb0] border-b border-[#8e8e90] flex items-center justify-between px-3 text-[#000000] text-xs font-semibold select-none shrink-0"
     >
       {/* Left: Terminal Info */}
       <div className="flex items-center gap-1.5">

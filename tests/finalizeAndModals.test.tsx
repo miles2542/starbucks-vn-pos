@@ -189,7 +189,8 @@ describe("Ticket 06: Order Finalization, Serve Type Modals, and Line Operations"
       // Entire drink and modifier removed
       expect(within(orderList).queryByText("T LATTE")).not.toBeInTheDocument();
       expect(within(orderList).queryByText("> LESS Ice")).not.toBeInTheDocument();
-      expect(screen.getByTestId("summary-total-amount")).toHaveTextContent("0");
+      expect(screen.queryByTestId("summary-total-amount")).not.toBeInTheDocument();
+      expect(screen.getByTestId("total-amount-display")).toHaveTextContent("0");
     });
 
     it("clears entire order with CLEAR ALL", () => {
@@ -204,8 +205,9 @@ describe("Ticket 06: Order Finalization, Serve Type Modals, and Line Operations"
       const orderList = screen.getByTestId("order-items-list");
       expect(within(orderList).queryByText("T LATTE")).not.toBeInTheDocument();
       expect(within(orderList).queryByText("T CAPPUCCINO")).not.toBeInTheDocument();
-      expect(screen.getByTestId("summary-total-quantity")).toHaveTextContent("0");
-      expect(screen.getByTestId("summary-total-amount")).toHaveTextContent("0");
+      expect(screen.queryByTestId("summary-total-quantity")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("summary-total-amount")).not.toBeInTheDocument();
+      expect(screen.getByTestId("total-amount-display")).toHaveTextContent("0");
     });
   });
 });
