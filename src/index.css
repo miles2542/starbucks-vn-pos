@@ -6,6 +6,44 @@
   font-family: Tahoma, "Segoe UI", Arial, sans-serif;
   user-select: none;
   -webkit-user-select: none;
+
+  /* =========================================================================
+     POS THEME PALETTE (Edit here for instant Vite HMR live-reload in browser!)
+     Simply save this file in VS Code and your browser updates automatically!
+     ========================================================================= */
+
+  /* 1. Global POS Frame, Gutters, and Borders */
+  --pos-chassis-bg: #aeaeb0;           /* Background color of the entire POS chassis & gaps */
+  --pos-border-color: #000000;         /* Border color around cells and frames */
+  --pos-border-width: 2px;             /* Cell/button border width */
+  --pos-btn-border: var(--pos-border-width) solid var(--pos-border-color);
+
+  /* 2. Button Gradients Top Color */
+  --pos-gradient-top: #f7f6f4;         /* Vintage near-white top color */
+
+  /* 3. Button Bottom Colors & Cell Backgrounds */
+  --pos-cell-bottom: #c6beb1;          /* Section II 5x6 content cells (bottom color, 50% slider) */
+  --pos-cell-empty-bg: #aeaeb0;        /* Empty placeholder cells in Section I & II */
+  --pos-category-flat: #cfcfd2;        /* Flat category cells in Section I & normal Section IV cells */
+  --pos-red-bottom: #e23515;           /* Red modifiers, multipliers, and size buttons (20% slider) */
+  --pos-yellow-bottom: #c2ad28;        /* Yellow serve type, e-invoice, and nav arrow (20% slider) */
+  --pos-cyan-bottom: #6f8d9e;          /* Cyan buttons: SUMMER 3, Void, CLEAR ALL, tender SBUX CARD */
+  --pos-green-bottom: #85b373;         /* Green category: SBUX CARD */
+  --pos-blue-bottom: #409dd8;          /* Blue Section IV reorder arrow buttons */
+
+  /* 4. Section III Order Display */
+  --pos-section3-bg: #7a7a78;          /* Background of empty receipt space */
+  --pos-section3-header-purple: #795fb3;/* Upper header row 1 */
+  --pos-section3-status-bar: #9c948e;  /* Upper header row 2 background */
+  --pos-section3-status-text: #b94026; /* Order No & Serve Type text color */
+  --pos-section3-item-selected: #9bc272;/* Highlighted item background */
+  --pos-section3-item-normal: #cfcfd2; /* Unhighlighted item background */
+  --pos-section3-summary-bg: #8ac5f3;  /* Running totals summary lines background */
+
+  /* 5. Section IV & Breadcrumb */
+  --pos-section4-amount-bg: #97b2e6;   /* Large total amount display field */
+  --pos-breadcrumb-bg: #e6ddc6;        /* Breadcrumb banner background */
+  --pos-breadcrumb-text: #45368d;      /* Breadcrumb banner text color */
 }
 
 /* Authentic Flat POS Buttons with Solid Black Border */
@@ -22,7 +60,7 @@
   line-height: 1.15;
   box-sizing: border-box;
   color: #000000;
-  border: 1px solid #000000;
+  border: var(--pos-btn-border);
   transition: filter 0.05s ease;
 }
 
@@ -32,58 +70,58 @@
 
 /* Section II Center 5x6 Content Cells (50% even slider) */
 .pos-btn-default {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 50%, #c6beb1 100%);
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 50%, var(--pos-cell-bottom) 100%);
   color: #000000;
 }
 
-/* Section I Flat Category Buttons & Tender Grey (No gradient) */
+/* Section I Flat Category Buttons, Section IV Normal Cells, & Tender Grey */
 .pos-btn-category,
 .pos-btn-tender-grey,
 .pos-btn-flat {
-  background: #cfcfd2;
+  background: var(--pos-category-flat);
   color: #000000;
 }
 
 /* Green category (SBUX CARD, 20% slider) */
 .pos-btn-green {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 20%, #85b373 100%);
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, var(--pos-green-bottom) 100%);
   color: #000000;
 }
 
 /* Cyan category (SUMMER 3, 20% slider) */
 .pos-btn-cyan,
 .pos-btn-tender-cyan {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 20%, #6f8d9e 100%);
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, var(--pos-cyan-bottom) 100%);
   color: #000000;
 }
 
 /* Red Modifiers, Multipliers, Sizes & Sets Order (20% slider) */
 .pos-btn-red {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 20%, #e23515 100%);
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, var(--pos-red-bottom) 100%);
   color: #000000;
 }
 
 /* Yellow Serve Type, E-Invoice, Nav Arrow (20% slider) */
 .pos-btn-yellow {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 20%, #c2ad28 100%);
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, var(--pos-yellow-bottom) 100%);
   color: #000000;
 }
 
 /* Blue Order Reorder Arrow Buttons (20% slider) */
 .pos-btn-blue {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 20%, #409dd8 100%);
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, var(--pos-blue-bottom) 100%);
   color: #000000;
 }
 
-/* Empty placeholder cell in 5x6 item matrix */
+/* Empty placeholder cell in Section I and Section II */
 .pos-cell-empty {
-  background: linear-gradient(to bottom, #f7f6f4 0%, 50%, #c6beb1 100%);
-  border: 1px solid #000000;
+  background: var(--pos-cell-empty-bg);
+  border: var(--pos-btn-border);
   border-radius: 0px;
   box-sizing: border-box;
 }
 
-/* Empty blank space (chassis fill without button bevel) */
+/* Empty blank space */
 .pos-cell-blank {
   background: transparent;
 }

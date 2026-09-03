@@ -160,17 +160,22 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
               );
             }
 
-            // 2. Column 7: Sizes and Sets (Rows 1-6) & Empty on Row 7
+            // 2. Column 7: Sizes and Sets (Rows 1-5, Row 6-7: Sets order / Complete Payment)
             if (col === 7) {
+              if (row === 7) {
+                // Row 6 spans into row 7
+                return null;
+              }
+
               if (isPaymentMode) {
-                // Payment Mode: Rows 1-5: Empty, Row 6: Complete Payment, Row 7: Empty
+                // Payment Mode: Rows 1-5: Empty, Row 6: Complete Payment (spans 2 rows)
                 if (row === 6) {
                   return (
                     <PosButton
                       key={cellKey}
                       variant="modifier-red"
                       onClick={() => completePayment()}
-                      className="text-xs font-black tracking-tight"
+                      className="text-xs font-black tracking-tight col-start-7 row-start-6 row-span-2"
                     >
                       Complete Payment
                     </PosButton>
@@ -184,6 +189,8 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
                 return <PosButton key={cellKey} variant="empty" />;
               }
 
+              const isSetsOrder = sizeBtn.id === "size_sets" || row === 6;
+
               return (
                 <PosButton
                   key={cellKey}
@@ -195,7 +202,9 @@ export const ItemGrid: React.FC<ItemGridProps> = ({ onChangeSizeClick }) => {
                       onChangeSizeClick?.();
                     }
                   }}
-                  className="text-xs font-black tracking-tight"
+                  className={`text-xs font-black tracking-tight ${
+                    isSetsOrder ? "col-start-7 row-start-6 row-span-2" : ""
+                  }`}
                 >
                   {sizeBtn.name}
                 </PosButton>

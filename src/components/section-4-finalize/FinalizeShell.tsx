@@ -123,7 +123,7 @@ export const FinalizeShell: React.FC = () => {
             >
               DELETE
             </PosButton>
-            <PosButton variant="default" className="text-[11px] font-black">
+            <PosButton variant="category" className="text-[11px] font-black">
               Balance Enquiry
             </PosButton>
           </div>
@@ -131,7 +131,7 @@ export const FinalizeShell: React.FC = () => {
           {/* Payment Mode Action Row 2: Rewards Enquiry, Empty, Empty, Empty */}
           <div className="grid grid-cols-4 gap-1 flex-1">
             <PosButton
-              variant="default"
+              variant="category"
               className="text-[11px] font-black"
               onClick={() => openModal("rewards_enquiry")}
             >
@@ -168,17 +168,17 @@ export const FinalizeShell: React.FC = () => {
             >
               Void
             </PosButton>
-            <PosButton variant="default" className="text-xs font-black">
+            <PosButton variant="category" className="text-xs font-black">
               Barcode/ SKU
             </PosButton>
-            <PosButton variant="default" className="text-xs font-black">
+            <PosButton variant="category" className="text-xs font-black">
               Hold Receipt
             </PosButton>
           </div>
 
           {/* Action Row 2 */}
           <div className="grid grid-cols-4 gap-1 flex-1">
-            <PosButton variant="default" className="text-xs font-black">
+            <PosButton variant="category" className="text-xs font-black">
               Recall Receipt
             </PosButton>
             <PosButton
@@ -202,17 +202,17 @@ export const FinalizeShell: React.FC = () => {
 
           {/* Action Row 3 */}
           <div className="grid grid-cols-4 gap-1 flex-1">
-            <PosButton variant="default" className="text-[11px] font-black">
+            <PosButton variant="category" className="text-[11px] font-black">
               Balance Enquiry
             </PosButton>
             <PosButton
-              variant="default"
+              variant="category"
               className="text-[11px] font-black"
               onClick={() => openModal("rewards_enquiry")}
             >
               Rewards Enquiry
             </PosButton>
-            <PosButton variant="default" className="text-[11px] font-black">
+            <PosButton variant="category" className="text-[11px] font-black">
               TRANS. INQ.
             </PosButton>
             <PosButton variant="serve-yellow" className="p-0 flex items-center justify-center">
