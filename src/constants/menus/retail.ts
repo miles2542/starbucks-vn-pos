@@ -306,6 +306,7 @@ export const DISCOUNT_ITEMS: MenuItem[] = [
     id: 'nso_promo',
     categoryId: 'discount',
     name: 'NSO Promo',
+    isSubcategory: true,
     hasSizes: false,
     price: 0,
     row: 2,

@@ -130,7 +130,11 @@ export const FinalizeShell: React.FC = () => {
 
           {/* Payment Mode Action Row 2: Rewards Enquiry, Empty, Empty, Empty */}
           <div className="grid grid-cols-4 gap-1 flex-1">
-            <PosButton variant="default" className="text-[11px] font-black">
+            <PosButton
+              variant="default"
+              className="text-[11px] font-black"
+              onClick={() => openModal("rewards_enquiry")}
+            >
               Rewards Enquiry
             </PosButton>
             <PosButton variant="empty" />
@@ -201,7 +205,11 @@ export const FinalizeShell: React.FC = () => {
             <PosButton variant="default" className="text-[11px] font-black">
               Balance Enquiry
             </PosButton>
-            <PosButton variant="default" className="text-[11px] font-black">
+            <PosButton
+              variant="default"
+              className="text-[11px] font-black"
+              onClick={() => openModal("rewards_enquiry")}
+            >
               Rewards Enquiry
             </PosButton>
             <PosButton variant="default" className="text-[11px] font-black">

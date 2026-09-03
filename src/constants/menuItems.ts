@@ -3,7 +3,13 @@ import { HOT_ESP_ITEMS, ICED_ESP_ITEMS } from './menus/espresso';
 import { COFFEE_FRAPP_ITEMS, CREAM_FRAPP_ITEMS } from './menus/frappuccino';
 import { BLENDED_JUICE_ITEMS } from './menus/blendedJuice';
 import { BREWED_ITEMS } from './menus/brewed';
-import { TEA_ITEMS, TEA_DS_BLACK_TEA_ITEMS, TEA_DS_GREEN_TEA_ITEMS } from './menus/tea';
+import { COLD_BREW_ITEMS } from './menus/brewedSubcategories';
+import {
+  TEA_ITEMS,
+  TEA_DS_BLACK_TEA_ITEMS,
+  TEA_DS_GREEN_TEA_ITEMS,
+  TEA_DS_HIBISCUS_ITEMS,
+} from './menus/tea';
 import {
   TEA_LATTE_ITEMS,
   TEA_ENG_BREAKFAST_ITEMS,
@@ -24,6 +30,8 @@ import { FOOD_ITEMS, FOOD_BAKERY_ITEMS } from './menus/food';
 import { FOOD_DESSERTS_ITEMS, FOOD_SANDWICHES_ITEMS } from './menus/foodSubcategories';
 import { SUMMER_3_ITEMS, AUTUMN_ITEMS } from './menus/seasonal';
 import { PK_HN_ITEMS, PACKAGING_ITEMS, DISCOUNT_ITEMS } from './menus/retail';
+import { DELIVERY_ITEMS, SBUX_CARD_ITEMS, SBAPP_MERCHANDISE_ITEMS } from './menus/merchandise';
+import { NSO_PROMO_ITEMS } from './menus/nsoPromo';
 
 export const MENU_ITEMS_BY_CATEGORY: Record<string, MenuItem[]> = {
   // Hot & Iced Espresso
@@ -39,11 +47,15 @@ export const MENU_ITEMS_BY_CATEGORY: Record<string, MenuItem[]> = {
 
   // Brewed Coffee
   brewed: BREWED_ITEMS,
+  cold_brew: COLD_BREW_ITEMS,
+  brewed_cold_brew: COLD_BREW_ITEMS,
 
   // Tea & Subcategories
   tea: TEA_ITEMS,
   tea_ds_black_tea: TEA_DS_BLACK_TEA_ITEMS,
   tea_ds_green_tea: TEA_DS_GREEN_TEA_ITEMS,
+  tea_ds_hibiscus: TEA_DS_HIBISCUS_ITEMS,
+  ds_hibiscus: TEA_DS_HIBISCUS_ITEMS,
   tea_latte: TEA_LATTE_ITEMS,
   tea_tea_latte: TEA_LATTE_ITEMS,
   tea_eng_breakfast: TEA_ENG_BREAKFAST_ITEMS,
@@ -82,11 +94,13 @@ export const MENU_ITEMS_BY_CATEGORY: Record<string, MenuItem[]> = {
   pk_hn: PK_HN_ITEMS,
   packaging: PACKAGING_ITEMS,
   discount: DISCOUNT_ITEMS,
+  nso_promo: NSO_PROMO_ITEMS,
+  discount_nso_promo: NSO_PROMO_ITEMS,
 
-  // Empty / Delivery / Sbux Card stubs
-  sbux_card: [],
-  delivery_item: [],
-  sbapp_merchandise: [],
+  // Merchandise, Delivery & Sbux Card
+  sbux_card: SBUX_CARD_ITEMS,
+  delivery_item: DELIVERY_ITEMS,
+  sbapp_merchandise: SBAPP_MERCHANDISE_ITEMS,
 };
 
 export const MODIFIER_COLUMN_BUTTONS = [

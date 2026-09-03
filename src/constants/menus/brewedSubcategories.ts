@@ -1,0 +1,40 @@
+import type { MenuItem } from '@/types/pos';
+
+export const COLD_BREW_ITEMS: MenuItem[] = [
+  {
+    id: 't_iced_cold_brew',
+    categoryId: 'brewed',
+    subcategoryId: 'cold_brew',
+    name: 'T Iced Cold Brew',
+    baseName: 'Iced Cold Brew',
+    hasSizes: true,
+    price: 70000,
+    prices: { S: 65000, T: 70000, G: 80000, V: 90000 },
+    row: 1,
+    col: 1,
+  },
+  {
+    id: 't_iced_vsccb',
+    categoryId: 'brewed',
+    subcategoryId: 'cold_brew',
+    name: 'T Iced VSCCB',
+    baseName: 'Iced VSCCB',
+    hasSizes: true,
+    price: 80000,
+    prices: { S: 75000, T: 80000, G: 90000, V: 100000 },
+    row: 1,
+    col: 2,
+  },
+  {
+    id: 't_hrcb',
+    categoryId: 'brewed',
+    subcategoryId: 'cold_brew',
+    name: 'T HRCB',
+    baseName: 'HRCB',
+    hasSizes: true,
+    price: 85000,
+    prices: { S: 80000, T: 85000, G: 95000, V: 105000 },
+    row: 1,
+    col: 3,
+  },
+];

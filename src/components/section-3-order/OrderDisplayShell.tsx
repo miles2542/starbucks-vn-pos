@@ -14,6 +14,7 @@ const getServeTypeSuffix = (itemServeType?: string, globalServeType?: string): s
     case "For Here":
       return "H";
     case "B2BTS":
+    case "B2BS":
       return "S";
     default:
       return "";

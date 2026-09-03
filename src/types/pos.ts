@@ -65,10 +65,10 @@ export interface OrderItem {
   serveType?: ServeType;
 }
 
-export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BTS";
+export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BS" | "B2BTS";
 export type Multiplier = 1 | 2 | 3 | 4;
 export type SizeCode = "S" | "T" | "G" | "V";
-export type ModalType = "serve_type_all" | "serve_type_item" | "change_size" | "qty" | null;
+export type ModalType = "serve_type_all" | "serve_type_item" | "change_size" | "qty" | "rewards_enquiry" | null;
 
 export interface PosState {
   // App Shell & Viewport
@@ -142,7 +142,7 @@ export interface PosState {
   changeSelectedItemSize: (newSize: SizeCode) => void;
   moveSelectedLine: (direction: "up" | "down" | "top" | "bottom") => void;
   reorderDrink: (direction: "up" | "down" | "top" | "bottom") => void;
-  setItemServeType: (itemId: string, serveType: ServeType) => void;
+  setItemServeType: (itemId: string, serveType?: ServeType | "Reset") => void;
   updateItemQuantity: (lineId: string, quantity: number) => void;
   openModal: (modal: ModalType) => void;
   closeModal: () => void;

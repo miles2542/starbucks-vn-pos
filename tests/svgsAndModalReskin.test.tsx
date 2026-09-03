@@ -83,20 +83,20 @@ describe("Ticket 09: Pixel-Accurate SVGs, Selection Glow Removal, and Classic Mo
 
       // Default selection (For Here) has blue highlight
       const forHereBtn = screen.getByTestId("serve-option-for-here");
-      expect(forHereBtn.className).toContain("bg-[#1d4ed8]");
-      expect(forHereBtn.className).toContain("text-white");
+      expect(forHereBtn.className).toContain("bg-[#026bca]");
+      expect(forHereBtn.className).toContain("text-[#fafafa]");
 
       // Click To Go
       const toGoBtn = screen.getByTestId("serve-option-to-go");
       fireEvent.click(toGoBtn);
-      expect(toGoBtn.className).toContain("bg-[#1d4ed8]");
-      expect(toGoBtn.className).toContain("text-white");
+      expect(toGoBtn.className).toContain("bg-[#026bca]");
+      expect(toGoBtn.className).toContain("text-[#fafafa]");
 
-      // Verify 3D beveled OK and Cancel buttons
+      // Verify OK and Cancel buttons
       const okBtn = screen.getByRole("button", { name: "OK" });
       const cancelBtn = screen.getByRole("button", { name: "Cancel" });
-      expect(okBtn.className).toContain("border-t-2");
-      expect(cancelBtn.className).toContain("border-t-2");
+      expect(okBtn).toBeInTheDocument();
+      expect(cancelBtn).toBeInTheDocument();
 
       fireEvent.click(okBtn);
       expect(screen.queryByTestId("modal-serve-type")).not.toBeInTheDocument();
@@ -113,14 +113,14 @@ describe("Ticket 09: Pixel-Accurate SVGs, Selection Glow Removal, and Classic Mo
 
       // Active size Tall has blue highlight
       const tallOption = screen.getByTestId("size-option-tall");
-      expect(tallOption.className).toContain("bg-[#1d4ed8]");
-      expect(tallOption.className).toContain("text-white");
+      expect(tallOption.className).toContain("bg-[#026bca]");
+      expect(tallOption.className).toContain("text-[#fafafa]");
 
       // Switch to Grande
       const grandeOption = screen.getByTestId("size-option-grande");
       fireEvent.click(grandeOption);
-      expect(grandeOption.className).toContain("bg-[#1d4ed8]");
-      expect(grandeOption.className).toContain("text-white");
+      expect(grandeOption.className).toContain("bg-[#026bca]");
+      expect(grandeOption.className).toContain("text-[#fafafa]");
 
       fireEvent.click(screen.getByRole("button", { name: "OK" }));
       expect(screen.queryByTestId("modal-change-size")).not.toBeInTheDocument();

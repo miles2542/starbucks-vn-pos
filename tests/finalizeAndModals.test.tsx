@@ -35,7 +35,7 @@ describe("Ticket 06: Order Finalization, Serve Type Modals, and Line Operations"
       expect(screen.getByRole("button", { name: "For Here" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "To Go" })).toBeInTheDocument();
       expect(screen.getByRole("button", { name: "BYO" })).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "B2BTS" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "B2BS" })).toBeInTheDocument();
 
       // Select 'To Go' and confirm
       fireEvent.click(screen.getByRole("button", { name: "To Go" }));

@@ -394,10 +394,12 @@ export const usePosStore = create<PosState>((set, get) => ({
     get().reorderDrink(direction);
   },
 
-  setItemServeType: (itemId: string, serveType: ServeType) => {
+  setItemServeType: (itemId: string, serveType?: ServeType | "Reset") => {
     const { orderItems } = get();
     const updatedOrderItems = orderItems.map((item) =>
-      item.id === itemId ? { ...item, serveType } : item,
+      item.id === itemId
+        ? { ...item, serveType: serveType === "Reset" || !serveType ? undefined : serveType }
+        : item,
     );
     set({ orderItems: updatedOrderItems });
   },

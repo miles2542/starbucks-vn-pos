@@ -5,6 +5,7 @@ import { HeaderBar } from "@/components/layout/HeaderBar";
 import { ViewportContainer } from "@/components/layout/ViewportContainer";
 import { ChangeSizeModal } from "@/components/modals/ChangeSizeModal";
 import { QtyModal } from "@/components/modals/QtyModal";
+import { RewardsEnquiryModal } from "@/components/modals/RewardsEnquiryModal";
 import { ServeTypeModal } from "@/components/modals/ServeTypeModal";
 import { CategoryGrid } from "@/components/section-1-categories/CategoryGrid";
 import { ItemGrid } from "@/components/section-2-items/ItemGrid";
@@ -58,6 +59,11 @@ export const App: React.FC = () => {
 
       <QtyModal
         isOpen={activeModal === "qty"}
+        onClose={closeModal}
+      />
+
+      <RewardsEnquiryModal
+        isOpen={activeModal === "rewards_enquiry"}
         onClose={closeModal}
       />
 
