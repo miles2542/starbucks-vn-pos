@@ -21,6 +21,7 @@ describe("App Shell Header & Footer", () => {
     expect(screen.getByTestId("header-bar")).toBeInTheDocument();
     expect(screen.getByText("M17015 - 17015")).toBeInTheDocument();
     expect(screen.getByText("0001")).toBeInTheDocument();
+    expect(screen.getByTestId("icon-calendar")).toBeInTheDocument();
     expect(screen.getByTestId("live-timestamp")).toBeInTheDocument();
   });
 
@@ -30,7 +31,7 @@ describe("App Shell Header & Footer", () => {
     expect(screen.getByTestId("footer-status-bar")).toBeInTheDocument();
     expect(screen.getByText("OnePOS [2.0.10.0]")).toBeInTheDocument();
     expect(screen.getByText("Not Set")).toBeInTheDocument();
-    expect(screen.getByText("Business Date20260829")).toBeInTheDocument();
+    expect(screen.getByText(/Business Date\d{8}/)).toBeInTheDocument();
     expect(screen.getByText("HAN CHI KIEN")).toBeInTheDocument();
   });
 

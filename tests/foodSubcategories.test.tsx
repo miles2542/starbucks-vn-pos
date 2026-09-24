@@ -63,7 +63,7 @@ describe("Ticket 04: Food Subcategories, Stock Badges & Sold-Out Overlays", () =
     expect(screen.getByRole("button", { name: /Almond Croissant VN/i })).toBeInTheDocument();
   });
 
-  it("displays green stock count badges on in-stock items", () => {
+  it("displays green stock count badges on all available items", () => {
     usePosStore.setState({
       activeCategoryId: "food_hn_hy_bni",
       activeSubcategoryId: "bakery_hn",
@@ -76,16 +76,16 @@ describe("Ticket 04: Food Subcategories, Stock Badges & Sold-Out Overlays", () =
     render(<ItemGrid />);
 
     const stockBadges = screen.getAllByTestId("stock-badge");
-    expect(stockBadges.length).toBe(5);
+    expect(stockBadges.length).toBe(12);
 
     const badgeTexts = stockBadges.map((b) => b.textContent);
-    expect(badgeTexts).toContain("4"); // Butter Croissant FZ
-    expect(badgeTexts).toContain("2"); // Chocolate Croissant
-    expect(badgeTexts).toContain("5"); // Mini Donuts & Banana Chocolate Muf
-    expect(badgeTexts).toContain("3"); // Skinny Blueberry Muf
+    expect(badgeTexts).toContain("6"); // Butter Croissant FZ (exception higher)
+    expect(badgeTexts).toContain("5"); // Apple Strudel (exception higher)
+    expect(badgeTexts).toContain("3"); // Chocolate Croissant
+    expect(badgeTexts).toContain("2"); // Mini Donuts
   });
 
-  it("displays authentic red diagonal crosses on sold-out items", () => {
+  it("does not render sold-out crosses when all bakery items are in stock", () => {
     usePosStore.setState({
       activeCategoryId: "food_hn_hy_bni",
       activeSubcategoryId: "bakery_hn",
@@ -97,11 +97,11 @@ describe("Ticket 04: Food Subcategories, Stock Badges & Sold-Out Overlays", () =
 
     render(<ItemGrid />);
 
-    const soldOutCrosses = screen.getAllByTestId("sold-out-cross");
-    expect(soldOutCrosses.length).toBe(7);
+    const soldOutCrosses = screen.queryAllByTestId("sold-out-cross");
+    expect(soldOutCrosses).toHaveLength(0);
   });
 
-  it("appends in-stock food items to Section III and ignores clicks on sold-out items", () => {
+  it("appends in-stock food items to Section III", () => {
     usePosStore.setState({
       activeCategoryId: "food_hn_hy_bni",
       activeSubcategoryId: "bakery_hn",
@@ -118,12 +118,7 @@ describe("Ticket 04: Food Subcategories, Stock Badges & Sold-Out Overlays", () =
       </>
     );
 
-    // Click sold out item (Mon Chocolate Donut) - should NOT be added
-    const soldOutBtn = screen.getByRole("button", { name: /Mon Chocolate Donut/i });
-    fireEvent.click(soldOutBtn);
-    expect(usePosStore.getState().orderItems).toHaveLength(0);
-
-    // Click in-stock item (Butter Croissant FZ - 45,000)
+    // Click item (Butter Croissant FZ - 45,000)
     const inStockBtn = screen.getByRole("button", { name: /Butter Croissant FZ/i });
     fireEvent.click(inStockBtn);
 

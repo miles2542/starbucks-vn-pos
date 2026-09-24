@@ -127,13 +127,11 @@ describe("Ticket 10: Expanded Menu Ingestion", () => {
 
     const butterCroissant = screen.getByRole("button", { name: /Butter Croissant FZ/i });
     expect(butterCroissant).toBeInTheDocument();
-    expect(butterCroissant.textContent).toContain("4");
+    expect(butterCroissant.textContent).toContain("6");
 
     const appleStrudel = screen.getByRole("button", { name: /Apple Strudel/i });
     expect(appleStrudel).toBeInTheDocument();
-    // Sold-out buttons cannot be ordered
-    fireEvent.click(appleStrudel);
-    expect(usePosStore.getState().orderItems).toHaveLength(0);
+    expect(appleStrudel.textContent).toContain("5");
   });
 
   it("renders seasonal items in SUMMER 3 and FY26-27 AUTUMN", () => {

@@ -1,7 +1,7 @@
 import {
+  CalendarIcon,
   RegisterDrawerIcon,
   StoreHouseIcon,
-  WifiSignalIcon,
 } from "@/components/common/PosIcons";
 import { usePosStore } from "@/store/usePosStore";
 import React, { useEffect, useState } from "react";
@@ -40,9 +40,9 @@ export const HeaderBar: React.FC = () => {
         <span className="tracking-tight text-neutral-800 font-bold">{terminalId}</span>
       </div>
 
-      {/* Center: Live Date & Time + Wi-Fi */}
+      {/* Center: Live Date & Time + Calendar Icon */}
       <div className="flex items-center gap-1.5 font-medium text-neutral-700">
-        <WifiSignalIcon className="w-4 h-4" />
+        <CalendarIcon className="w-4 h-4 text-emerald-700" />
         <span data-testid="live-timestamp">{currentTime || "2026/08/29 12:00:00"}</span>
       </div>
 

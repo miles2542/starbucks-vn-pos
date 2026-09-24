@@ -51,6 +51,13 @@ const triggerRefresh = (
   }
 };
 
+export const getFormattedBusinessDate = (date: Date = new Date()): string => {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}${m}${d}`;
+};
+
 export const usePosStore = create<PosState>((set, get) => ({
   // App Shell & Viewport
   zoomMode: "fit",
@@ -61,7 +68,7 @@ export const usePosStore = create<PosState>((set, get) => ({
   // Header & Footer info
   terminalId: "M17015 - 17015",
   registerNumber: "0001",
-  businessDate: "20260829",
+  businessDate: getFormattedBusinessDate(),
   cashierName: "HAN CHI KIEN",
   currentServeType: "Not Set",
 

@@ -39,7 +39,7 @@ describe("Ticket 09: Pixel-Accurate SVGs, Selection Glow Removal, and Classic Mo
       render(<App />);
 
       expect(screen.getByTestId("icon-store-house")).toBeInTheDocument();
-      expect(screen.getByTestId("icon-wifi-signal")).toBeInTheDocument();
+      expect(screen.getByTestId("icon-calendar")).toBeInTheDocument();
       expect(screen.getByTestId("icon-register-drawer")).toBeInTheDocument();
       expect(screen.getByTestId("icon-cashier-user")).toBeInTheDocument();
     });
