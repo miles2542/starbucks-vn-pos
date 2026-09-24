@@ -21,6 +21,5 @@ export const CATEGORIES: CategoryItem[] = [
 
   // Row 3
   { id: "packaging", code: "PACKAGING", name: "PACKAGING", row: 3, col: 1 },
-  { id: "summer_3", code: "SUMMER_3", name: "SUMMER 3", row: 3, col: 2, variant: "category-cyan" },
-  { id: "autumn_26_27", code: "AUTUMN_26_27", name: "FY26-27 AUTUMN", row: 3, col: 3 },
+  { id: "autumn_26_27", code: "AUTUMN_26_27", name: "FY26-27 AUTUMN", row: 3, col: 2, variant: "category-yellow" },
 ];

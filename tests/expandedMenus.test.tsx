@@ -134,26 +134,24 @@ describe("Ticket 10: Expanded Menu Ingestion", () => {
     expect(appleStrudel.textContent).toContain("5");
   });
 
-  it("renders seasonal items in SUMMER 3 and FY26-27 AUTUMN", () => {
-    act(() => {
-      usePosStore.setState({
-        activeCategoryId: "summer_3",
-        breadcrumb: [{ label: "SUMMER 3", id: "summer_3" }],
-      });
-    });
-
-    const { rerender } = render(<ItemGrid />);
-    expect(screen.getByRole("button", { name: /T Strawberry CB/i })).toBeInTheDocument();
-
+  it("renders seasonal items in FY26-27 AUTUMN with size prefixes", () => {
     act(() => {
       usePosStore.setState({
         activeCategoryId: "autumn_26_27",
         breadcrumb: [{ label: "FY26-27 AUTUMN", id: "autumn_26_27" }],
+        activeSize: "T",
       });
+    });
+
+    const { rerender } = render(<ItemGrid />);
+    expect(screen.getByRole("button", { name: /T Pumpkin Latte/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "T Black Cat Frap" })).toBeInTheDocument();
+
+    act(() => {
+      usePosStore.setState({ activeSize: "G" });
       rerender(<ItemGrid />);
     });
-    expect(screen.getByRole("button", { name: /T Pumpkin Latte/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Black Cat Frap/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "G Black Cat Frap" })).toBeInTheDocument();
   });
 
   it("renders packaging, discounts and retail items correctly", () => {

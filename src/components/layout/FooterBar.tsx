@@ -14,7 +14,7 @@ export const FooterBar: React.FC = () => {
     >
       {/* Left: Software Version */}
       <div className="flex items-center gap-2">
-        <span className="font-bold tracking-tight text-neutral-800">OnePOS [2.0.10.0]</span>
+        <span className="font-bold tracking-tight text-neutral-800">OnePOS [2.0.15.0]</span>
       </div>
 
       {/* Right: Status Info */}

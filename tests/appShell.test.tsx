@@ -29,7 +29,7 @@ describe("App Shell Header & Footer", () => {
     render(<FooterBar />);
 
     expect(screen.getByTestId("footer-status-bar")).toBeInTheDocument();
-    expect(screen.getByText("OnePOS [2.0.10.0]")).toBeInTheDocument();
+    expect(screen.getByText("OnePOS [2.0.15.0]")).toBeInTheDocument();
     expect(screen.getByText("Not Set")).toBeInTheDocument();
     expect(screen.getByText(/Business Date\d{8}/)).toBeInTheDocument();
     expect(screen.getByText("HAN CHI KIEN")).toBeInTheDocument();

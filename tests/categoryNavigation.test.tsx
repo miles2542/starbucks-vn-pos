@@ -39,7 +39,6 @@ describe("Category Grid & Navigation", () => {
     expect(screen.getByRole("button", { name: "SBApp Merchandise" })).toBeInTheDocument();
 
     expect(screen.getByRole("button", { name: "PACKAGING" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "SUMMER 3" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "FY26-27 AUTUMN" })).toBeInTheDocument();
   });
 

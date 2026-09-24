@@ -135,6 +135,18 @@
   color: #000000;
 }
 
+/* Pastel Yellow Category (FY26-27 AUTUMN, 20% slider) */
+.pos-btn-pastel-yellow {
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, #e8df98 100%);
+  color: #000000;
+}
+
+/* Bright Yellow Item (Cream Custard Plait, 20% slider) */
+.pos-btn-bright-yellow {
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, #eccb29 100%);
+  color: #000000;
+}
+
 /* Empty placeholder cell in Section I and Section II */
 .pos-cell-empty {
   background: var(--pos-cell-empty-bg);

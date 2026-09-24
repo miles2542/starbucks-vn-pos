@@ -286,7 +286,7 @@ export const AUTUMN_ITEMS: MenuItem[] = [
   {
     id: 'black_cat_frap',
     categoryId: 'autumn',
-    name: 'Black Cat Frap',
+    name: 'T Black Cat Frap',
     baseName: 'Black Cat Frap',
     hasSizes: true,
     price: 90000,

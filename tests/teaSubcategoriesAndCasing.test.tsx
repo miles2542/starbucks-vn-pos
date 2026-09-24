@@ -29,7 +29,7 @@ describe("Ticket 12: Complete Tea Subcategories and 100% Exact Capitalization Au
   });
 
   it("completes TEA LATTE subcategory items matching reference photo exactly", () => {
-    expect(TEA_LATTE_ITEMS).toHaveLength(10);
+    expect(TEA_LATTE_ITEMS).toHaveLength(12);
     const expectedNames = [
       "T CH",
       "T Iced CH",
@@ -41,6 +41,8 @@ describe("Ticket 12: Complete Tea Subcategories and 100% Exact Capitalization Au
       "T PMEF",
       "T Iced PMEF",
       "T PM Coco water",
+      "T HojichaLatte",
+      "T Iced HojichaLatte",
     ];
     expectedNames.forEach((name) => {
       expect(TEA_LATTE_ITEMS.some((item) => item.name === name)).toBe(true);
@@ -62,6 +64,12 @@ describe("Ticket 12: Complete Tea Subcategories and 100% Exact Capitalization Au
       "T PMEF",
       "T Iced PMEF",
       "T PM Coco water",
+    ]);
+
+    const row3 = TEA_LATTE_ITEMS.filter((i) => i.row === 3).map((i) => i.name);
+    expect(row3).toEqual([
+      "T HojichaLatte",
+      "T Iced HojichaLatte",
     ]);
   });
 

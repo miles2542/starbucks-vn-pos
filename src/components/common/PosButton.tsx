@@ -29,6 +29,8 @@ export const PosButton: React.FC<PosButtonProps> = ({
     category: "pos-btn-category",
     "category-green": "pos-btn-green",
     "category-cyan": "pos-btn-cyan",
+    "category-yellow": "pos-btn-pastel-yellow",
+    "item-yellow": "pos-btn-bright-yellow",
     "modifier-red": "pos-btn-red",
     "tender-cyan": "pos-btn-tender-cyan",
     "tender-grey": "pos-btn-tender-grey",

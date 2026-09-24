@@ -163,4 +163,15 @@ export const FOOD_BAKERY_ITEMS: MenuItem[] = [
     row: 3,
     col: 2,
   },
+  {
+    id: 'cream_custard_plait',
+    categoryId: 'food',
+    name: 'Cream Custard Plait',
+    hasSizes: false,
+    price: 55000,
+    stock: 3,
+    row: 3,
+    col: 3,
+    variant: 'item-yellow',
+  },
 ];

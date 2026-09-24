@@ -76,13 +76,14 @@ describe("Ticket 04: Food Subcategories, Stock Badges & Sold-Out Overlays", () =
     render(<ItemGrid />);
 
     const stockBadges = screen.getAllByTestId("stock-badge");
-    expect(stockBadges.length).toBe(12);
+    expect(stockBadges.length).toBe(13);
 
     const badgeTexts = stockBadges.map((b) => b.textContent);
     expect(badgeTexts).toContain("6"); // Butter Croissant FZ (exception higher)
     expect(badgeTexts).toContain("5"); // Apple Strudel (exception higher)
-    expect(badgeTexts).toContain("3"); // Chocolate Croissant
+    expect(badgeTexts).toContain("3"); // Chocolate Croissant & Cream Custard Plait
     expect(badgeTexts).toContain("2"); // Mini Donuts
+    expect(screen.getByRole("button", { name: /Cream Custard Plait/i })).toBeInTheDocument();
   });
 
   it("does not render sold-out crosses when all bakery items are in stock", () => {

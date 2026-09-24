@@ -5,6 +5,8 @@ export type ButtonVariant =
   | "category"
   | "category-green"
   | "category-cyan"
+  | "category-yellow"
+  | "item-yellow"
   | "modifier-red"
   | "tender-cyan"
   | "tender-grey"
