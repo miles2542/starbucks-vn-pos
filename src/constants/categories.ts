@@ -15,11 +15,33 @@ export const CATEGORIES: CategoryItem[] = [
   { id: "food_hn_hy_bni", code: "FOOD_HN_HY_BNI", name: "Food HN HY BNI", row: 2, col: 2 },
   { id: "pk_hn", code: "PK_HN", name: "PK HN", row: 2, col: 3 },
   { id: "discount", code: "DISCOUNT", name: "DISCOUNT", row: 2, col: 4 },
-  { id: "sbux_card", code: "SBUX_CARD", name: "SBUX CARD", row: 2, col: 5, variant: "category-green" },
+  {
+    id: "sbux_card",
+    code: "SBUX_CARD",
+    name: "SBUX CARD",
+    row: 2,
+    col: 5,
+    variant: "category-green",
+  },
   { id: "delivery_item", code: "DELIVERY_ITEM", name: "DELIVERY ITEM", row: 2, col: 6 },
   { id: "sbapp_merchandise", code: "SBAPP_MERCHANDISE", name: "SBApp Merchandise", row: 2, col: 7 },
 
   // Row 3
   { id: "packaging", code: "PACKAGING", name: "PACKAGING", row: 3, col: 1 },
-  { id: "autumn_26_27", code: "AUTUMN_26_27", name: "FY26-27 AUTUMN", row: 3, col: 2, variant: "category-yellow" },
+  {
+    id: "autumn_26_27",
+    code: "AUTUMN_26_27",
+    name: "FY26-27 AUTUMN",
+    row: 3,
+    col: 2,
+    variant: "category-yellow",
+  },
+  {
+    id: "fy27_holiday",
+    code: "FY27_HOLIDAY",
+    name: "FY27 HOLIDAY",
+    row: 3,
+    col: 3,
+    variant: "category-holiday",
+  },
 ];

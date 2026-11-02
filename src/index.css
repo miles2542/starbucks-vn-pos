@@ -40,6 +40,8 @@
   /* Cyan buttons: SUMMER 3, Void, CLEAR ALL, tender SBUX CARD */
   --pos-green-bottom: rgb(119, 197, 88);
   /* Green category: SBUX CARD */
+  --pos-holiday-green-bottom: #568436;
+  /* Deep Holiday forest green category: FY27 HOLIDAY */
   --pos-blue-bottom: #409dd8;
   /* Blue Section IV reorder arrow buttons */
 
@@ -138,6 +140,12 @@
 /* Pastel Yellow Category (FY26-27 AUTUMN, 20% slider) */
 .pos-btn-pastel-yellow {
   background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, #e8df98 100%);
+  color: #000000;
+}
+
+/* Deep Holiday Green Category (FY27 HOLIDAY, 20% slider) */
+.pos-btn-holiday-green {
+  background: linear-gradient(to bottom, var(--pos-gradient-top) 0%, 20%, var(--pos-holiday-green-bottom) 100%);
   color: #000000;
 }
 
