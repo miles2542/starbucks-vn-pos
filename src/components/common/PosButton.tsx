@@ -1,6 +1,6 @@
 import type { ButtonVariant } from "@/types/pos";
 import clsx from "clsx";
-import React from "react";
+import type React from "react";
 
 interface PosButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -30,6 +30,8 @@ export const PosButton: React.FC<PosButtonProps> = ({
     "category-green": "pos-btn-green",
     "category-cyan": "pos-btn-cyan",
     "category-yellow": "pos-btn-pastel-yellow",
+    "category-holiday": "pos-btn-holiday-green",
+    "category-holiday-green": "pos-btn-holiday-green",
     "item-yellow": "pos-btn-bright-yellow",
     "modifier-red": "pos-btn-red",
     "tender-cyan": "pos-btn-tender-cyan",
@@ -71,12 +73,27 @@ export const PosButton: React.FC<PosButtonProps> = ({
           className="absolute inset-0 z-20 pointer-events-none flex items-center justify-center p-1"
         >
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <line x1="10" y1="10" x2="90" y2="90" stroke="#dc2626" strokeWidth="6" strokeLinecap="round" />
-            <line x1="90" y1="10" x2="10" y2="90" stroke="#dc2626" strokeWidth="6" strokeLinecap="round" />
+            <line
+              x1="10"
+              y1="10"
+              x2="90"
+              y2="90"
+              stroke="#dc2626"
+              strokeWidth="6"
+              strokeLinecap="round"
+            />
+            <line
+              x1="90"
+              y1="10"
+              x2="10"
+              y2="90"
+              stroke="#dc2626"
+              strokeWidth="6"
+              strokeLinecap="round"
+            />
           </svg>
         </div>
       )}
     </button>
   );
 };
-

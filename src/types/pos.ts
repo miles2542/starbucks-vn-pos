@@ -6,6 +6,8 @@ export type ButtonVariant =
   | "category-green"
   | "category-cyan"
   | "category-yellow"
+  | "category-holiday"
+  | "category-holiday-green"
   | "item-yellow"
   | "modifier-red"
   | "tender-cyan"
@@ -70,7 +72,13 @@ export interface OrderItem {
 export type ServeType = "Not Set" | "To Go" | "For Here" | "BYO" | "B2BS" | "B2BTS";
 export type Multiplier = 1 | 2 | 3 | 4;
 export type SizeCode = "S" | "T" | "G" | "V";
-export type ModalType = "serve_type_all" | "serve_type_item" | "change_size" | "qty" | "rewards_enquiry" | null;
+export type ModalType =
+  | "serve_type_all"
+  | "serve_type_item"
+  | "change_size"
+  | "qty"
+  | "rewards_enquiry"
+  | null;
 
 export interface PosState {
   // App Shell & Viewport
@@ -149,4 +157,3 @@ export interface PosState {
   openModal: (modal: ModalType) => void;
   closeModal: () => void;
 }
-

@@ -15,8 +15,8 @@ import type {
   MenuItem,
   ModalType,
   Multiplier,
-  OrderModifier,
   OrderItem,
+  OrderModifier,
   PosState,
   ServeType,
   SizeCode,
@@ -105,14 +105,20 @@ export const usePosStore = create<PosState>((set, get) => ({
   setEnableRefreshTransition: (enable: boolean) => set({ enableRefreshTransition: enable }),
 
   setActiveCategory: (categoryId: string) => {
-    const category = CATEGORIES.find((c) => c.id === categoryId);
+    const category = CATEGORIES.find(
+      (c) =>
+        c.id === categoryId ||
+        c.code.toLowerCase() === categoryId.toLowerCase() ||
+        (categoryId === "fy2027_holiday" && c.id === "fy27_holiday"),
+    );
+    const resolvedId = category ? category.id : categoryId;
     const categoryName = category ? category.name : categoryId;
     triggerRefresh(set, get, {
-      activeCategoryId: categoryId,
+      activeCategoryId: resolvedId,
       activeSubcategoryId: null,
       isModifierMode: false,
       activeModifierPage: null,
-      breadcrumb: [{ label: categoryName, id: categoryId }],
+      breadcrumb: [{ label: categoryName, id: resolvedId }],
       activeSize: "T", // Reset size to Tall default on category change
     });
   },
@@ -165,7 +171,7 @@ export const usePosStore = create<PosState>((set, get) => ({
     const unitPrice =
       item.hasSizes && item.prices?.[currentSize] !== undefined
         ? item.prices[currentSize]!
-        : item.price ?? 0;
+        : (item.price ?? 0);
 
     const newItemId = `order-item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
     const newOrderItem: OrderItem = {
